@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "petshop-online": {
+    "veterinary-clinic": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/petshop-online",
+            "outputPath": "dist/veterinary-clinic",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -68,10 +68,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "petshop-online:build:production"
+              "browserTarget": "veterinary-clinic:build:production"
             },
             "development": {
-              "browserTarget": "petshop-online:build:development"
+              "browserTarget": "veterinary-clinic:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +79,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "petshop-online:build"
+            "browserTarget": "veterinary-clinic:build"
           }
         },
         "test": {
