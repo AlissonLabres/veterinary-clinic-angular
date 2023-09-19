@@ -1,23 +1,18 @@
 <div class="calendar">
-  <div class="text-light" *ngFor="let nameMonth of weekDaysName">{{ nameMonth }}</div>
+  <div class="name-month py-2" *ngFor="let nameMonth of weekDaysName">{{ nameMonth }}</div>
   <div
     class="text-secondary fw-light my-2 py-2 mx-1"
     *ngFor="let day of calendar.last"
     data-testid="previous"
   >{{ day }}</div>
-  <a
+  <div
     hover-day
-    data-testid="link-day"
-    class="link-underline link-underline-opacity-0 my-2 py-2 mx-1"
-    [ngClass]="compateDate(day)"
+    data-testid="day"
+    class="link-underline link-underline-opacity-0 my-2 py-2 mx-1 position-relative"
     *ngFor="let day of calendar.current"
-  >
-    <div
-      data-testid="day"
-      class="position-relative"
-      (click)="select(day)"
-    > {{ day }} </div>
-  </a>
+    [ngClass]="compateDate(day)"
+    (click)="select(day)"
+  >{{ day }}</div>
   <div
     class="text-secondary fw-light my-2 py-2 mx-1"
     *ngFor="let day of calendar.next"

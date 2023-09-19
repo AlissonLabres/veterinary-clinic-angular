@@ -17,14 +17,14 @@ describe(DatesComponent.name, () => {
   it('should create component and view date active and not active', async () => {
     await renderComponent();
 
-    const days = screen.getAllByTestId('link-day');
-    const warning = days[0].classList.item(5);
-    const bold = days[0].classList.item(6);
-    const cursor = days[0].classList.item(7);
+    const days = screen.getAllByTestId('day');
+    const warning = days[0].classList.item(6);
+    const bold = days[0].classList.item(7);
+    const cursor = days[0].classList.item(8);
 
-    const secondary = days[1].classList.item(5);
+    const secondary = days[1].classList.item(6);
 
-    expect(warning).toEqual('text-warning');
+    expect(warning).toEqual('text-danger');
     expect(bold).toEqual('fw-bold');
     expect(cursor).toEqual('cursor-click');
 

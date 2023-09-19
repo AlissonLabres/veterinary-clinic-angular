@@ -16,7 +16,7 @@ export class HoverDayDirective {
   }
 
   private iteratorTo(action: string) {
-    ['rounded-2', 'border-secondary', 'border'].forEach((hover: string) => {
+    ['rounded-5', 'border'].forEach((hover: string) => {
       const actions: { [action: string]: Function } = {
         add: this.add,
         remove: this.remove,

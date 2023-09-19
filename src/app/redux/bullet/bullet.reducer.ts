@@ -2,11 +2,12 @@ import { createReducer, on } from "@ngrx/store";
 
 import { BulletStateInterface } from "./bullet.state";
 import { GetBullet, GetBulletError, GetBulletSuccess } from "./bullet.action";
-import { SelectDateCalendar } from "../calendar/calendar.action";
+import { SelectDateCalendar, SelectHourCalendar } from "../calendar/calendar.action";
 
 const initialState: BulletStateInterface = {
   entities: [],
-  select: undefined,
+  date: undefined,
+  hour: undefined,
   isLoading: 'false'
 };
 
@@ -19,5 +20,18 @@ export const BulletReducer = createReducer(
     isLoading: 'false'
   })),
   on(GetBulletError, (state) => ({ ...state, isLoading: 'false' })),
-  on(SelectDateCalendar, (state, { date }) => ({ ...state, select: date }))
+  on(SelectDateCalendar, (state, { value }) => {
+    if (value instanceof Date) {
+      return { ...state, date: value };
+    }
+
+    return { ...state };
+  }),
+  on(SelectHourCalendar, (state, { value }) => {
+    if (value instanceof Date) {
+      return { ...state };
+    }
+
+    return { ...state, hour: value };
+  })
 )

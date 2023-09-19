@@ -22,8 +22,8 @@ export class DatesComponent implements OnInit {
     const date = new Date(dateCalendar.getFullYear(), dateCalendar.getMonth(), day);
 
     return this.hasBulletAvailableWith(date)
-      ? 'text-warning fw-bold cursor-click'
-      : 'text-secondary';
+      ? 'text-danger fw-bold cursor-click border-danger'
+      : 'text-secondary border-light-subtle';
   }
 
   select(day: number) {

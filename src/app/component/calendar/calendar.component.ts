@@ -3,11 +3,12 @@ import { Store, select } from '@ngrx/store';
 
 import { MonthNameEnum } from './calendar-month-name.component';
 
-import { GetBulletsDateSelector, GetBulletsTimePerDaySelector, GetLoadingBullet } from '../../redux/bullet/bullet.selector';
-import { GetBullet } from '../../redux/bullet/bullet.action';
+import { GetBulletSelector, GetBulletsDateSelector, GetBulletsTimePerDaySelector, GetLoadingBullet } from '../../redux/bullet/bullet.selector';
+import { GetBullet, SendBullet } from '../../redux/bullet/bullet.action';
 
 import { GetCalendarSelector } from '../../redux/calendar/calendar.selector';
-import { GetCalendar, NextMonthCalendar, PreviousMonthCalendar, SelectDateCalendar } from '../../redux/calendar/calendar.action';
+import { GetCalendar, NextMonthCalendar, PreviousMonthCalendar, SelectDateCalendar, SelectHourCalendar } from '../../redux/calendar/calendar.action';
+import { BulletStateInterface } from '../../redux/bullet/bullet.state';
 
 @Component({
   selector: 'app-calendar',
@@ -17,6 +18,7 @@ import { GetCalendar, NextMonthCalendar, PreviousMonthCalendar, SelectDateCalend
 export class CalendarComponent implements OnInit {
 
   isLoadingBullet$ = this.store.pipe(select(GetLoadingBullet));
+  bullets$ = this.store.pipe(select(GetBulletSelector));
   bulletsDateAvailable$ = this.store.pipe(select(GetBulletsDateSelector));
   bulletsTimeAvailable$ = this.store.pipe(select(GetBulletsTimePerDaySelector));
   calendar$ = this.store.pipe(select(GetCalendarSelector));
@@ -45,7 +47,16 @@ export class CalendarComponent implements OnInit {
     this.store.dispatch(NextMonthCalendar());
   }
 
-  select($event: Date | undefined) {
-    this.store.dispatch(SelectDateCalendar({ date: $event }))
+  selectDay($event: Date | undefined) {
+    this.store.dispatch(SelectDateCalendar({ value: $event }))
   }
+
+  selectBullet($event: string | undefined) {
+    this.store.dispatch(SelectHourCalendar({ value: $event }))
+  }
+
+  sendBullet(bullet: { date: Date | undefined, hour: string | undefined }) {
+    this.store.dispatch(SendBullet({ entity: { date: bullet.date!, hour: bullet.hour! } }))
+  }
+
 }

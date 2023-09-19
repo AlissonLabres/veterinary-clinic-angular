@@ -5,6 +5,7 @@ export interface BulletInterface {
 
 export interface BulletStateInterface {
   entities: BulletInterface[];
-  select: Date | undefined;
+  date: Date | undefined;
+  hour: string | undefined;
   isLoading: string;
 }

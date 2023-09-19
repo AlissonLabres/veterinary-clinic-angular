@@ -6,4 +6,23 @@
   .cursor-click {
     cursor: pointer;
   }
+
+  :nth-child(7n),
+  :nth-child(7n-6) {
+    color: rgba(var(--bs-danger-rgb), .7) !important;
+  }
+
+  :nth-child(1) {
+    border-bottom-left-radius: var(--bs-border-radius-xxl) !important;
+    border-top-left-radius: var(--bs-border-radius-xxl) !important;
+  }
+
+  :nth-child(7) {
+    border-bottom-right-radius: var(--bs-border-radius-xxl) !important;
+    border-top-right-radius: var(--bs-border-radius-xxl) !important;
+  }
+
+  .name-month {
+    background-color: rgba(var(--bs-danger-rgb), .05) !important;;
+  }
 }

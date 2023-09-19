@@ -5,6 +5,13 @@ import { BulletEntity } from "../../domain/entity/bullet.entity";
 
 const GetBulletState = createFeatureSelector<BulletStateInterface>('bulletState');
 
+export const GetBulletSelector = createSelector(
+  GetBulletState,
+  (state: BulletStateInterface) => {
+    return { date: state.date, hour: state.hour };
+  }
+);
+
 export const GetBulletsDateSelector = createSelector(
   GetBulletState,
   (state: BulletStateInterface) => {
@@ -18,9 +25,9 @@ export const GetBulletsDateSelector = createSelector(
 export const GetBulletsTimePerDaySelector = createSelector(
   GetBulletState,
   (state: BulletStateInterface) => {
-    if (state?.select) {
+    if (state?.date) {
       const values: any[] = state.entities
-        .filter((entity: BulletEntity) => new Date(entity.code).getDay() === state.select!.getDay())
+        .filter((entity: BulletEntity) => new Date(entity.code).getDay() === state.date!.getDay())
         .map((entity: BulletEntity) => entity.code.split('T')[1]);
 
       return [...new Set(values)];

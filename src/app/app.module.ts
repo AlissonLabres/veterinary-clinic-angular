@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -30,6 +31,7 @@ import { TimesComponent } from './component/times/times.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     StoreModule.forRoot({
       bulletState: BulletReducer,
       calendarState: CalendarReducer,

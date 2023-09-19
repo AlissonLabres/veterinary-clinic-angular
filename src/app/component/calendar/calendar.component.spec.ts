@@ -8,7 +8,7 @@ import { createEvent, render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
 import { fireEvent } from '@testing-library/dom';
 
-import { GetBulletsDateSelector, GetBulletsTimePerDaySelector, GetLoadingBullet } from '../../redux/bullet/bullet.selector';
+import { GetBulletSelector, GetBulletsDateSelector, GetBulletsTimePerDaySelector, GetLoadingBullet } from '../../redux/bullet/bullet.selector';
 
 import { CalendarComponent } from './calendar.component';
 import { DatesComponent } from '../dates/dates.component';
@@ -69,6 +69,11 @@ const renderCalendar = async (status: string = 'false', selectSpy: jest.Mock = j
     value: status,
   };
 
+  const selectorBulletsMock = {
+    selector: GetBulletSelector,
+    value: { date: '2023-02-08', hour: '16:00' },
+  };
+
   const selectorBulletAvailable = {
     selector: GetBulletsDateSelector,
     value: ['2023-02-08', '2023-02-13'],
@@ -86,9 +91,9 @@ const renderCalendar = async (status: string = 'false', selectSpy: jest.Mock = j
 
   return render(CalendarComponent, {
     declarations: MockComponents(DatesComponent, TimesComponent),
-    componentProperties: { select: selectSpy },
+    componentProperties: { selectDay: selectSpy },
     providers: [
-      provideMockStore({ selectors: [selectorLoadingBulletMock, selectorBulletAvailable, selectorCalendarMock] })
+      provideMockStore({ selectors: [selectorLoadingBulletMock, selectorBulletAvailable, selectorCalendarMock, selectorBulletsMock] })
     ],
   })
 }

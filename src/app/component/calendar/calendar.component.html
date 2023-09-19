@@ -1,12 +1,12 @@
-<div class="row" *ngIf="isLoadingBullet$ | async as loadingBullet">
+<ng-container *ngIf="isLoadingBullet$ | async as loadingBullet">
   <div
-    class="card border-0 col-lg-8 mx-auto"
+    class="card border-0 mx-auto"
     *ngIf="loadingBullet === 'false'; else loadingCalenderTemplate"
     data-testid="card-page"
   >
-    <ng-container *ngIf="calendar$ | async as calendar">
-      <div class="text-center bg-dark p-3 rounded-5">
-        <div class="row text-center my-4 text-light">
+    <div class="row justify-content-center" *ngIf="calendar$ | async as calendar">
+      <div class="text-center col-lg-8 p-3 rounded-5">
+        <div class="row text-center my-4">
           <div class="col" data-testid="previous-month" (click)="previousMonth()">
             <a href="#">
               <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 128 128">
@@ -31,16 +31,21 @@
           data-testid="app-dates"
           [bulletsDateAvailable]="bulletsDateAvailable"
           [calendar]="calendar"
-          (day)="select($event)"
+          (day)="selectDay($event)"
         ></app-dates>
       </div>
-      <app-times
-        *ngIf="bulletsTimeAvailable$ | async as bulletsTimeAvailable"
-        [bulletsTimeAvailable]="bulletsTimeAvailable"
-      ></app-times>
-    </ng-container>
+      <div class="col-lg-2 col">
+        <app-times
+          *ngIf="bulletsTimeAvailable$ | async as bulletsTimeAvailable"
+          [bulletsTimeAvailable]="bulletsTimeAvailable"
+          (bullet)="selectBullet($event)"
+        ></app-times>
+      </div>
+    </div>
+
+    <button *ngIf="bullets$ | async as bullet" type="button" class="btn btn-danger btn-lg mt-3" (click)="sendBullet(bullet)">Enviar</button>
   </div>
-</div>
+</ng-container>
 
 <ng-template #loadingCalenderTemplate>
   <div class="spinner-border" role="status" data-testid="loading-page">

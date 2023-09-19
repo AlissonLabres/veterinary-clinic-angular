@@ -10,9 +10,8 @@ describe('Directive: HoverDay', () => {
     const directive = screen.getByTestId('hover-day');
 
     await user.hover(directive);
-    expect(directive.classList.item(0)).toContain('rounded-2');
-    expect(directive.classList.item(1)).toContain('border-secondary');
-    expect(directive.classList.item(2)).toContain('border');
+    expect(directive.classList.item(0)).toContain('rounded-5');
+    expect(directive.classList.item(1)).toContain('border');
 
     await user.unhover(directive);
     expect(directive.classList.item(0)).toBeNull();
