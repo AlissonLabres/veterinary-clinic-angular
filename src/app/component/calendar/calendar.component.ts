@@ -7,8 +7,7 @@ import { GetBulletSelector, GetBulletsDateSelector, GetBulletsTimePerDaySelector
 import { GetBullet, SendBullet } from '../../redux/bullet/bullet.action';
 
 import { GetCalendarSelector } from '../../redux/calendar/calendar.selector';
-import { GetCalendar, NextMonthCalendar, PreviousMonthCalendar, SelectDateCalendar, SelectHourCalendar } from '../../redux/calendar/calendar.action';
-import { BulletStateInterface } from '../../redux/bullet/bullet.state';
+import { CleanSelectionCalendar, GetCalendar, NextMonthCalendar, PreviousMonthCalendar, SelectDateCalendar, SelectHourCalendar } from '../../redux/calendar/calendar.action';
 
 @Component({
   selector: 'app-calendar',
@@ -40,10 +39,12 @@ export class CalendarComponent implements OnInit {
   }
 
   previousMonth() {
+    this.store.dispatch(CleanSelectionCalendar());
     this.store.dispatch(PreviousMonthCalendar());
   }
 
   nextMonth() {
+    this.store.dispatch(CleanSelectionCalendar());
     this.store.dispatch(NextMonthCalendar());
   }
 

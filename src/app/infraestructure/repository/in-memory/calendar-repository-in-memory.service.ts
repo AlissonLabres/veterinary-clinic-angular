@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, interval, map, of, takeUntil } from 'rxjs';
 import { BulletEntity } from '../../../domain/entity/bullet.entity';
 import { CalendarRepositoryInterface } from '../../../domain/repository/calendar-repository.interface';
+import { ScheduleEntity } from '../../../domain/entity/schedule.entity';
 
 @Injectable()
 export class CalendarRepositoryInMemoryService implements CalendarRepositoryInterface {
@@ -28,6 +29,10 @@ export class CalendarRepositoryInMemoryService implements CalendarRepositoryInte
         code: '2023-09-10T16:00'
       }
     ];
+  }
+
+  getAllSchedules(): Observable<ScheduleEntity[]> {
+    return of();
   }
 
   sendSchedule(bullet: BulletEntity): Observable<void> {

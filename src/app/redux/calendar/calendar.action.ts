@@ -15,5 +15,5 @@ export const PreviousMonthCalendar = createAction('[Calendar] Loading previous m
 export const PreviousMonthCalendarSuccess = createAction('[Calendar] Load previous month success', propsCalendarEntity);
 
 export const SelectDateCalendar = createAction('[Calendar] Select date calendar success', propsSelectEntity);
-
 export const SelectHourCalendar = createAction('[Calendar] Select hour calendar success', propsSelectEntity);
+export const CleanSelectionCalendar = createAction('[Calendar] Clean selection');

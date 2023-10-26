@@ -9,7 +9,7 @@
 
   :nth-child(7n),
   :nth-child(7n-6) {
-    color: rgba(var(--bs-danger-rgb), .7) !important;
+    color: rgba(var(--bs-danger-rgb), .7);
   }
 
   :nth-child(1) {

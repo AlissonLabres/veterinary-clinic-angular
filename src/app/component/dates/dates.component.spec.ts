@@ -24,11 +24,11 @@ describe(DatesComponent.name, () => {
 
     const secondary = days[1].classList.item(6);
 
-    expect(warning).toEqual('text-danger');
+    expect(warning).toEqual('text-indigo');
     expect(bold).toEqual('fw-bold');
     expect(cursor).toEqual('cursor-click');
 
-    expect(secondary).toEqual('text-secondary');
+    expect(secondary).toEqual('border-0');
   });
 
   it('should create component, click in date active and emitter date', async () => {

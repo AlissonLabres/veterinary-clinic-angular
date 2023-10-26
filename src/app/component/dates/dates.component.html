@@ -1,7 +1,7 @@
 <div class="calendar">
   <div class="name-month py-2" *ngFor="let nameMonth of weekDaysName">{{ nameMonth }}</div>
   <div
-    class="text-secondary fw-light my-2 py-2 mx-1"
+    class="fw-light my-2 py-2 mx-1"
     *ngFor="let day of calendar.last"
     data-testid="previous"
   >{{ day }}</div>
@@ -14,7 +14,7 @@
     (click)="select(day)"
   >{{ day }}</div>
   <div
-    class="text-secondary fw-light my-2 py-2 mx-1"
+    class="fw-light my-2 py-2 mx-1"
     *ngFor="let day of calendar.next"
     data-testid="next"
   >{{ day }}</div>

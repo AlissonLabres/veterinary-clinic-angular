@@ -1,2 +1,69 @@
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+:root {
+  --bs-indigo-rgb: 102, 16, 242;
+  --bs-indigo-rgb-shadow: 61, 10, 145;
+
+  --bs-indigo-500: #6610f2;
+  --bs-indigo-700: #3d0a91;
+  --bs-indigo-900: #140330;
+}
+
+
+.btn-outline-indigo {
+  --bs-btn-color: var(--bs-indigo);
+  --bs-btn-border-color: var(--bs-indigo);
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-hover-bg: var(--bs-indigo);
+  --bs-btn-hover-border-color: var(--bs-indigo);
+  --bs-btn-focus-shadow-rgb: $bs-indigo-rgb-shadow;
+  --bs-btn-active-color: var(--bs-white);
+  --bs-btn-active-bg: var(--bs-indigo);
+  --bs-btn-active-border-color: var(--bs-indigo);
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: var(--bs-indigo);
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: var(--bs-indigo);
+  --bs-gradient: none;
+}
+
+.btn:hover {
+  color: var(--bs-btn-hover-color);
+  background-color: var(--bs-btn-hover-bg);
+  border-color: var(--bs-btn-hover-border-color);
+}
+
+.btn-indigo {
+  --bs-btn-color: var(--bs-white);
+  --bs-btn-bg: var(--bs-indigo);
+  --bs-btn-border-color: var(--bs-indigo);
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-hover-bg: var(--bs-indigo-700);
+  --bs-btn-hover-border-color: var(--bs-indigo-900);
+  --bs-btn-focus-shadow-rgb: var(--bs-indigo-rgb)-shadow;
+  --bs-btn-active-color: var(--bs-white);
+  --bs-btn-active-bg: var(--bs-indigo-900);
+  --bs-btn-active-border-color: var(--bs-indigo-900);
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: var(--bs-white);
+  --bs-btn-disabled-bg: var(--bs-indigo);
+  --bs-btn-disabled-border-color: var(--bs-indigo);
+}
+
+.text-indigo {
+  --bs-text-opacity: 1;
+  color: rgba(var(--bs-indigo-rgb), var(--bs-text-opacity)) !important;
+}
+
+.border-indigo {
+  --bs-border-opacity: 1;
+  border-color: rgba(var(--bs-indigo-rgb), var(--bs-border-opacity)) !important;
+}

@@ -22,8 +22,8 @@ export class DatesComponent implements OnInit {
     const date = new Date(dateCalendar.getFullYear(), dateCalendar.getMonth(), day);
 
     return this.hasBulletAvailableWith(date)
-      ? 'text-danger fw-bold cursor-click border-danger'
-      : 'text-secondary border-light-subtle';
+      ? 'text-indigo fw-bold cursor-click border-indigo'
+      : 'border-0';
   }
 
   select(day: number) {
@@ -43,5 +43,6 @@ export class DatesComponent implements OnInit {
 
   private compare(from: Date, to: string) {
     return new Date(from).getDate() === new Date(`${to}T03:00`).getDate()
+      && new Date(from).getMonth() === new Date(`${to}T03:00`).getMonth()
   }
 }

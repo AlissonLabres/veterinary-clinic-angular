@@ -15,7 +15,12 @@ import { BulletEffect } from './redux/bullet/bullet.effect';
 import { CalendarReducer } from './redux/calendar/calendar.reducer';
 import { CalendarEffect } from './redux/calendar/calendar.effect';
 
+import { ScheduleReducer } from './redux/schedule/schedule.reducer';
+import { ScheduleEffect } from './redux/schedule/schedule.effect';
+import { SchedulesComponent } from './component/schedules/schedules.component';
+
 import { HoverDayDirective } from './directive/hover-day.directive';
+
 import { CalendarComponent } from './component/calendar/calendar.component';
 import { DatesComponent } from './component/dates/dates.component';
 import { TimesComponent } from './component/times/times.component';
@@ -27,17 +32,20 @@ import { TimesComponent } from './component/times/times.component';
     CalendarComponent,
     DatesComponent,
     TimesComponent,
+    SchedulesComponent,
     HoverDayDirective
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     StoreModule.forRoot({
+      scheduleState: ScheduleReducer,
       bulletState: BulletReducer,
       calendarState: CalendarReducer,
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25 }),
     EffectsModule.forRoot([
+      ScheduleEffect,
       BulletEffect,
       CalendarEffect
     ]),
