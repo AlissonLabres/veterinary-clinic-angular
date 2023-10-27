@@ -1,19 +1,24 @@
 <div class="container">
-  <div class="row justify-content-between d-flex my-3">
-    <div
-      class="col h1 my-auto"
+  <header class="row justify-content-between d-flex my-3">
+    <h1
+      class="col my-auto"
       data-testid="title-page"
       routerLink="schedule"
-    ><a class="text-decoration-none">{{ title }}</a></div>
-    <div class="col-auto">
-      <div class="d-flex flex-column align-items-between gap-2">
-        <button type="button" class="col btn btn-outline-indigo" routerLink="calendar">Agendamento Emergencial</button>
-        <button type="button" class="col btn btn-outline-indigo" routerLink="calendar">Agendar consulta</button>
-      </div>
-    </div>
-  </div>
+      accesskey="h"
+    >
+      <a role="link" class="text-decoration-none">{{ title }}</a>
+    </h1>
+    <nav class="col-auto d-flex flex-column align-items-between gap-2">
+      <button
+        type="button"
+        class="col btn btn-outline-indigo"
+        routerLink="calendar"
+        accesskey="c"
+      >Agendar consulta</button>
+    </nav>
+  </header>
   <hr>
-  <div class="row">
+  <main class="row">
     <router-outlet></router-outlet>
-  </div>
+  </main>
 </div>
