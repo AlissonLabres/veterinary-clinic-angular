@@ -6,8 +6,8 @@ import { fireEvent, render, screen } from '@testing-library/angular';
 import { MockComponents } from 'ng-mocks';
 
 import { AppComponent } from './app.component';
-import { CalendarComponent } from './component/calendar/calendar.component';
-import { SchedulesComponent } from './component/schedules/schedules.component';
+import { CalendarComponent } from './web/component/calendar/calendar.component';
+import { SchedulesComponent } from './web/component/schedules/schedules.component';
 import { Routes } from '@angular/router';
 import { Location } from '@angular/common';
 import { TestBed } from '@angular/core/testing';

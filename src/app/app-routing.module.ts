@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SchedulesComponent } from './component/schedules/schedules.component';
-import { CalendarComponent } from './component/calendar/calendar.component';
+import { SchedulesComponent } from './web/component/schedules/schedules.component';
+import { CalendarComponent } from './web/component/calendar/calendar.component';
 
 const routes: Routes = [
   { path: 'schedule', component: SchedulesComponent },
