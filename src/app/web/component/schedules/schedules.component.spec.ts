@@ -8,9 +8,9 @@ describe('SchedulesComponent', () => {
     const schedules = [
       {
         schedule_id: 2,
-        bullet_code: new Date(),
+        bullet_code: '2023-10-01T16:00',
         schedule_status: 'Scheduled',
-        type_service: 'Service Type 1',
+        type_service: 'Appointment',
       }
     ];
 
@@ -23,9 +23,8 @@ describe('SchedulesComponent', () => {
       providers: [provideMockStore({ selectors: [selectorScheduleMock] })],
     })
 
-    expect(getByText(schedules[0].bullet_code.toLocaleDateString())).toBeTruthy();
-    // expect(getByText(schedules[0].bullet_code.toLocaleTimeString())).toBeTruthy();
-    expect(getByText(schedules[0].schedule_status)).toBeTruthy();
-    expect(getByText(schedules[0].type_service)).toBeTruthy();
+    expect(getByText('01/10/2023 as 16:00')).toBeTruthy();
+    expect(getByText('scheduled')).toBeTruthy();
+    expect(getByText('appointment')).toBeTruthy();
   });
 });

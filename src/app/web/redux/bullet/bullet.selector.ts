@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 
 import { BulletStateInterface } from "./bullet.state";
-import { BulletEntity } from "../../domain/entity/bullet.entity";
+import { BulletEntity } from "../../../domain/entity/bullet.entity";
 
 const GetBulletState = createFeatureSelector<BulletStateInterface>('bulletState');
 

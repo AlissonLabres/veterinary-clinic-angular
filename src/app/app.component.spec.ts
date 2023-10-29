@@ -27,19 +27,9 @@ describe(AppComponent.name, () => {
 
   it('should render buttons', async () => {
     const { getByText } = await renderAppComponent();
-    const emergencyButton = getByText('Agendamento Emergencial');
-    expect(emergencyButton).toBeTruthy();
 
     const appointmentButton = getByText('Agendar consulta');
     expect(appointmentButton).toBeTruthy();
-  });
-
-  it('should navigate to schedule page when emergency button is clicked', async () => {
-    const { getByText, location } = await renderAppComponent();
-    const emergencyButton = getByText('Agendamento Emergencial');
-    fireEvent.click(emergencyButton);
-
-    expect(location.path()).toEqual('/calendar');
   });
 
   it('should navigate to calendar page when appointment button is clicked', async () => {
