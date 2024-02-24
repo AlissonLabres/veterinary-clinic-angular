@@ -1,0 +1,92 @@
+<section class="card bg-light p-4 border border-0 rounded-4">
+  <h2 class="font-montserrat text-uppercase fw-bolder text-center" data-testId="text-create-user">Criar usuário</h2>
+  <form
+    data-testId="form-create-user"
+    [formGroup]="user" class="d-flex flex-column"
+    (ngSubmit)="sendForm()"
+  >
+    <ng-container *ngIf="error$ | async as error">
+      <div
+        data-testId="alert-error"
+        class="mt-3 alert alert-danger"
+        role="alert"
+      >
+        {{ error }}
+      </div>
+    </ng-container>
+    <div class="name">
+      <label class="font-montserrat" for="name">Nome</label>
+      <input
+        id="name"
+        type="text"
+        name="name"
+        placeholder="ex -   John Due"
+        data-testId="input-name"
+        [ngClass]="{ 'is-invalid': user.get('name')?.invalid && user.get('name')?.touched }"
+        formControlName="name"
+      />
+      <div
+        data-testId="text-error-name"
+        class="invalid-feedback"
+      >{{ user.get('name')?.errors | present:exceptions }}</div>
+    </div>
+    <div class="email">
+      <label class="font-montserrat" for="email">Email</label>
+      <input
+        id="email"
+        type="text"
+        name="email"
+        placeholder="ex -   email@email.com.br"
+        data-testId="input-email"
+        [ngClass]="{ 'is-invalid': user.get('email')?.invalid && user.get('email')?.touched }"
+        formControlName="email"
+      />
+      <div
+        data-testId="text-error-email"
+        class="invalid-feedback"
+      >{{ user.get('email')?.errors | present:exceptions }}</div>
+    </div>
+    <div class="phone">
+      <label class="font-montserrat" for="phone">Telefone</label>
+      <input
+        id="phone"
+        type="numeric"
+        name="phone"
+        placeholder="ex -   (00) 00000-0000"
+        data-testId="input-phone"
+        [ngClass]="{ 'is-invalid': user.get('phone')?.invalid && user.get('phone')?.touched }"
+        formControlName="phone"
+        phone
+      />
+      <div
+        data-testId="text-error-phone"
+        class="invalid-feedback"
+      >{{ user.get('phone')?.errors | present:exceptions }}</div>
+    </div>
+    <ng-container *ngIf="(loading$ | async) as loading">
+      <button
+        *ngIf="loading === 'false'"
+        type="submit"
+        data-testId="button-submit-user"
+        class="btn btn-indigo btn-block mt-4 fw-bolder font-montserrat text-uppercase justify-content-end"
+        [disabled]="user.invalid"
+      >
+        Criar usuário
+      </button>
+
+      <button
+        *ngIf="loading === 'true'"
+        type="submit"
+        data-testId="button-submit-user-loading"
+        class="btn btn-indigo btn-block mt-4 fw-bolder font-montserrat text-uppercase justify-content-end"
+        [disabled]="user.invalid"
+      >
+        <div class="spinner-grow text-dark" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </button>
+
+
+    </ng-container>
+  </form>
+</section>

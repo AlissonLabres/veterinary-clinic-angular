@@ -2,11 +2,11 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap } from 'rxjs';
 
-import { CalendarRepositoryInterface } from '../../domain/repository/calendar-repository.interface';
-import { CalendarRepositoryToken } from '../../config/injection-token.repositories';
+import { CalendarRepositoryInterface } from '../../../domain/repository/calendar-repository.interface';
+import { CalendarRepositoryToken } from '../../../config/injection-token.repositories';
 
 import { GetBullet, GetBulletSuccess, SendBullet, SendBulletSuccess } from './bullet.action';
-import { BulletEntity } from '../../domain/entity/bullet.entity';
+import { BulletEntity } from '../../../domain/entity/bullet.entity';
 import { BulletInterface } from './bullet.state';
 
 @Injectable({ providedIn: 'root' })

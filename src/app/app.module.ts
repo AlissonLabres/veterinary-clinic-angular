@@ -24,6 +24,14 @@ import { HoverDayDirective } from './web/directive/hover-day.directive';
 import { CalendarComponent } from './web/component/calendar/calendar.component';
 import { DatesComponent } from './web/component/dates/dates.component';
 import { TimesComponent } from './web/component/times/times.component';
+import { CreateUserComponent } from './web/component/create-user/create-user.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { PhoneDirective } from './web/directive/phone.directive';
+import { PresentErrorPipe } from './web/pipe/present-error.pipe';
+import { UserReducer } from './web/redux/user/user.reducer';
+import { UserEffect } from './web/redux/user/user.effect';
+import { ListUserComponent } from './web/component/list-user/list-user.component';
+import { PhonePipe } from './web/pipe/phone.pipe';
 
 
 @NgModule({
@@ -33,21 +41,29 @@ import { TimesComponent } from './web/component/times/times.component';
     DatesComponent,
     TimesComponent,
     SchedulesComponent,
-    HoverDayDirective
+    CreateUserComponent,
+    ListUserComponent,
+    HoverDayDirective,
+    PhoneDirective,
+    PhonePipe,
+    PresentErrorPipe,
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     HttpClientModule,
     StoreModule.forRoot({
       scheduleState: ScheduleReducer,
       bulletState: BulletReducer,
       calendarState: CalendarReducer,
+      userState: UserReducer
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25 }),
     EffectsModule.forRoot([
       ScheduleEffect,
       BulletEffect,
-      CalendarEffect
+      CalendarEffect,
+      UserEffect
     ]),
     AppRoutingModule,
   ],

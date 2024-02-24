@@ -2,10 +2,10 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap } from 'rxjs';
 
-import { CalendarRepositoryInterface } from '../../domain/repository/calendar-repository.interface';
-import { CalendarRepositoryToken } from '../../config/injection-token.repositories';
+import { CalendarRepositoryInterface } from '../../../domain/repository/calendar-repository.interface';
+import { CalendarRepositoryToken } from '../../../config/injection-token.repositories';
 import { GetSchedules, GetSchedulesSuccess } from './schedule.action';
-import { ScheduleEntity } from '../../domain/entity/schedule.entity';
+import { ScheduleEntity } from '../../../domain/entity/schedule.entity';
 import { ScheduleInterface } from './schedule.state';
 
 @Injectable({ providedIn: 'root' })

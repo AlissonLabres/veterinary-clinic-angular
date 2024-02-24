@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap } from 'rxjs';
 
-import { CalendarGatewayInterface } from '../../domain/gateway/calendar-gateway.interface';
-import { CalendarGatewayToken } from '../../config/injection-token.gateway';
+import { CalendarGatewayInterface } from '../../../domain/gateway/calendar-gateway.interface';
+import { CalendarGatewayToken } from '../../../config/injection-token.gateway';
 
 import { GetCalendar, GetCalendarSuccess, NextMonthCalendar, NextMonthCalendarSuccess, PreviousMonthCalendar, PreviousMonthCalendarSuccess } from './calendar.action';
 

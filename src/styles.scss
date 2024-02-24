@@ -1,22 +1,23 @@
 html,
 body {
   height: 100%;
-}
-
-body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 :root {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
   --bs-indigo-rgb: 102, 16, 242;
   --bs-indigo-rgb-shadow: 61, 10, 145;
 
+  --bs-indigo-200: #c29ffa;
   --bs-indigo-500: #6610f2;
   --bs-indigo-700: #3d0a91;
   --bs-indigo-900: #140330;
 }
 
+.font-montserrat {
+  font-family: 'Montserrat', sans-serif;
+}
 
 .btn-outline-indigo {
   --bs-btn-color: var(--bs-indigo);
@@ -54,8 +55,8 @@ body {
   --bs-btn-active-border-color: var(--bs-indigo-900);
   --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   --bs-btn-disabled-color: var(--bs-white);
-  --bs-btn-disabled-bg: var(--bs-indigo);
-  --bs-btn-disabled-border-color: var(--bs-indigo);
+  --bs-btn-disabled-bg: var(--bs-indigo-200);
+  --bs-btn-disabled-border-color: var(--bs-indigo-200);
 }
 
 .text-indigo {
