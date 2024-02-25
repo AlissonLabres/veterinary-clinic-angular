@@ -4,19 +4,16 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
 import { MockComponents } from 'ng-mocks';
 
-import { createEvent, render, screen } from '@testing-library/angular';
+import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
-import { fireEvent } from '@testing-library/dom';
 
-import { GetBulletSelector, GetBulletsDateSelector, GetBulletsTimePerDaySelector, GetLoadingBullet } from '../../redux/bullet/bullet.selector';
+import { GetBulletSelector, GetBulletsDateSelector, GetLoadingBullet } from '../../redux/bullet/bullet.selector';
 
 import { CalendarComponent } from './calendar.component';
 import { DatesComponent } from '../dates/dates.component';
 import { TimesComponent } from '../times/times.component';
 
 import { GetCalendarSelector } from '../../redux/calendar/calendar.selector';
-import { By } from '@angular/platform-browser';
-
 
 describe(CalendarComponent.name, () => {
   it('should create component and view loading page', async () => {
@@ -34,6 +31,22 @@ describe(CalendarComponent.name, () => {
   it('should create component and view month and date information', async () => {
     await renderCalendar();
     expect(screen.queryByTestId('month-year-date')).toHaveTextContent('FEVEREIRO 2023');
+  });
+
+
+  it('should create component, click to previous month and ensures to it was called once', async () => {
+    const { fixture, rerender } = await renderCalendar();
+
+    const store = TestBed.inject(MockStore);
+    store.dispatch = jest.fn();
+
+    rerender();
+
+    const component = fixture.componentInstance;
+    component.ngOnInit();
+
+    expect(store.dispatch).toHaveBeenNthCalledWith(1, { type: '[Bullet] Load dates to bullet' });
+    expect(store.dispatch).toHaveBeenNthCalledWith(2, { type: '[Calendar] Loading calendar' });
   });
 
   it('should create component, click to previous month and ensures to it was called once', async () => {
@@ -60,6 +73,76 @@ describe(CalendarComponent.name, () => {
     await user.click(nextMonth);
 
     expect(store.dispatch).toHaveBeenCalledWith({ type: '[Calendar] Loading next month' });
+  });
+
+  it('should create component, click to next month and ensures to it was called once', async () => {
+    const user = userEvent.setup();
+    await renderCalendar();
+
+    const store = TestBed.inject(MockStore);
+    store.dispatch = jest.fn();
+
+    const sendBullet = screen.getByTestId('send-bullet');
+    await user.click(sendBullet);
+
+    expect(store.dispatch).toHaveBeenCalledWith({
+      type: '[Bullet] Send bullet to server',
+      entity: {
+        date: "2023-02-08",
+        hour: "16:00",
+      }
+    });
+  });
+
+  it('should create component, click to send bullet and ensures to it was called once', async () => {
+    const user = userEvent.setup();
+    await renderCalendar();
+
+    const store = TestBed.inject(MockStore);
+    store.dispatch = jest.fn();
+
+    const sendBullet = screen.getByTestId('send-bullet');
+    await user.click(sendBullet);
+
+    expect(store.dispatch).toHaveBeenCalledWith({
+      type: '[Bullet] Send bullet to server',
+      entity: {
+        date: "2023-02-08",
+        hour: "16:00",
+      }
+    });
+  });
+
+  it('should create component, emit to select day and ensures to it was called once', async () => {
+    const { fixture, rerender } = await renderCalendar();
+    const store = TestBed.inject(MockStore);
+    store.dispatch = jest.fn();
+
+    rerender();
+
+    const calendarComponent = fixture.componentInstance;
+    calendarComponent.selectDay(new Date('2023-02-08'));
+
+    expect(store.dispatch).toHaveBeenCalledWith({
+      type: '[Calendar] Select date calendar success',
+      value: new Date('2023-02-08')
+    });
+  });
+
+  it('should create component, emit to select bullet and ensures to it was called once', async () => {
+    const { fixture, rerender } = await renderCalendar();
+    const store = TestBed.inject(MockStore);
+    store.dispatch = jest.fn();
+
+    rerender();
+
+    const calendarComponent = fixture.componentInstance;
+    calendarComponent.selectBullet('18:00');
+
+    expect(store.dispatch).toHaveBeenCalledWith({
+      type: '[Calendar] Select hour calendar success',
+      value: "18:00"
+    });
   });
 });
 

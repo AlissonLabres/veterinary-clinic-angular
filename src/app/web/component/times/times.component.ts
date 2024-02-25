@@ -7,7 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class TimesComponent {
   @Input() bulletsTimeAvailable!: string[];
-  @Output() bullet: EventEmitter<string> = new EventEmitter<string>;
+  @Output() bullet: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() { }
 

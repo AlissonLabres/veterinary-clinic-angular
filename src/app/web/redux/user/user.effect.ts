@@ -18,7 +18,7 @@ export class UserEffect {
     @Inject(UserRepositoryToken) userRepository: UserRepositoryInterface
   ) { this.userRepository = userRepository; }
 
-  loadingCalendar$ = createEffect(() =>
+  loadingUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GetUser),
       switchMap(() => this.userRepository.getUsers()),

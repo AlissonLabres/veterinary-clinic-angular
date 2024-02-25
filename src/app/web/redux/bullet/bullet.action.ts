@@ -1,9 +1,9 @@
 import { createAction, props } from "@ngrx/store";
 
-import { BulletInterface } from "./bullet.state";
+import { BulletEntityInterface, BulletInterface } from "./bullet.state";
 
 const propsBulletEntity = props<{ entities: BulletInterface[] }>();
-const propsSendEntity = props<{ entity: { date: Date, hour: string } }>();
+const propsSendEntity = props<{ entity: BulletEntityInterface }>();
 
 export const GetBullet = createAction('[Bullet] Load dates to bullet');
 export const GetBulletError = createAction('[Bullet] Load dates to bullet error')

@@ -8,6 +8,6 @@ export interface CalendarRepositoryInterface {
 
   getBulletsAvailable(): Observable<BulletEntity[]>;
 
-  sendSchedule(bullet: BulletEntity): Observable<void>;
+  sendSchedule(bullet: BulletEntity): Observable<BulletEntity>;
 
 }

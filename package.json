@@ -51,6 +51,9 @@
       "<rootDir>/node_modules/",
       "<rootDir>/dist/"
     ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/src/app/config/"
+    ],
     "transform": {
       "\\.html$": "ts-jest"
     }

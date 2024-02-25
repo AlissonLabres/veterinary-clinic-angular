@@ -45,7 +45,13 @@
       </div>
 
       <div class="my-5">
-        <button *ngIf="bullet.date && bullet.hour" type="button" class="btn btn-indigo btn-lg ms-4" (click)="sendBullet(bullet)">Enviar</button>
+        <button
+          *ngIf="bullet.date && bullet.hour"
+          data-testid="send-bullet"
+          type="button"
+          class="btn btn-indigo btn-lg ms-4"
+          (click)="sendBullet(bullet)"
+        >Enviar</button>
       </div>
     </ng-container>
   </div>

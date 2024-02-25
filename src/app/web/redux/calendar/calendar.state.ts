@@ -7,4 +7,5 @@ export interface CalendarInterface {
 
 export interface CalendarStateInterface {
   entity: CalendarInterface;
+  isLoading: string;
 }

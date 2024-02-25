@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 
-import { CalendarStateInterface } from "./calendar.state";
+import { CalendarInterface, CalendarStateInterface } from "./calendar.state";
 import { GetCalendar, GetCalendarSuccess, NextMonthCalendar, NextMonthCalendarSuccess, PreviousMonthCalendar, PreviousMonthCalendarSuccess } from "./calendar.action";
 
 const initialState: CalendarStateInterface = {
@@ -9,11 +9,11 @@ const initialState: CalendarStateInterface = {
     last: [],
     current: [],
     next: []
-  }
+  },
+  isLoading: 'false'
 };
 
-const updateStateSuccess = (state: CalendarStateInterface, { entity }: CalendarStateInterface) => ({ ...state, entity })
-
+const updateStateSuccess = (state: CalendarStateInterface, { value }: { value: CalendarInterface }) => ({ ...state, entity: value, isLoading: 'false' })
 const loadingState = (state: CalendarStateInterface) => ({ ...state, isLoading: 'true' })
 
 export const CalendarReducer = createReducer(

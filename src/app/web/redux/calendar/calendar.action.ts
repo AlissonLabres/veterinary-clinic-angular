@@ -2,7 +2,7 @@ import { createAction, props } from "@ngrx/store";
 
 import { CalendarInterface } from "./calendar.state";
 
-const propsCalendarEntity = props<{ entity: CalendarInterface }>();
+const propsCalendarEntity = props<{ value: CalendarInterface }>();
 const propsSelectEntity = props<{ value: Date | string | undefined }>();
 
 export const GetCalendar = createAction('[Calendar] Loading calendar');

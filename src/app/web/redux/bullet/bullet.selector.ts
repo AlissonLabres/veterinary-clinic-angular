@@ -27,7 +27,7 @@ export const GetBulletsTimePerDaySelector = createSelector(
   (state: BulletStateInterface) => {
     if (state?.date) {
       const values: any[] = state.entities
-        .filter((entity: BulletEntity) => new Date(entity.code).getDay() === state.date!.getDay())
+        .filter((entity: BulletEntity) => new Date(entity.code).getDate() === state.date!.getDate())
         .map((entity: BulletEntity) => entity.code.split('T')[1]);
 
       return [...new Set(values)];

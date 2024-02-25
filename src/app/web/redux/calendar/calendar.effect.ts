@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap } from 'rxjs';
 
@@ -10,18 +10,15 @@ import { GetCalendar, GetCalendarSuccess, NextMonthCalendar, NextMonthCalendarSu
 @Injectable({ providedIn: 'root' })
 export class CalendarEffect {
 
-  private calendarGateway: CalendarGatewayInterface;
+  private calendarGateway: CalendarGatewayInterface = inject(CalendarGatewayToken);
 
-  constructor(
-    private readonly actions$: Actions,
-    @Inject(CalendarGatewayToken) calendarGateway: CalendarGatewayInterface
-  ) { this.calendarGateway = calendarGateway; }
+  constructor(private readonly actions$: Actions) { }
 
   loadingCalendar$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GetCalendar),
       switchMap(() => this.calendarGateway.get()),
-      map((entity) => GetCalendarSuccess({ entity }))
+      map((value) => GetCalendarSuccess({ value }))
     )
   );
 
@@ -29,7 +26,7 @@ export class CalendarEffect {
     this.actions$.pipe(
       ofType(PreviousMonthCalendar),
       switchMap(() => this.calendarGateway.previous()),
-      map((entity) => PreviousMonthCalendarSuccess({ entity }))
+      map((value) => PreviousMonthCalendarSuccess({ value }))
     )
   );
 
@@ -37,7 +34,7 @@ export class CalendarEffect {
     this.actions$.pipe(
       ofType(NextMonthCalendar),
       switchMap(() => this.calendarGateway.next()),
-      map((entity) => NextMonthCalendarSuccess({ entity }))
+      map((value) => NextMonthCalendarSuccess({ value }))
     )
   );
 }

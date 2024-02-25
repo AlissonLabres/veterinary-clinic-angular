@@ -6,14 +6,14 @@ import { Observable, of } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class CalendarGatewayService implements CalendarGatewayInterface {
 
-  private date: Date;
+  date: Date;
 
   constructor() {
     this.date = new Date();
   }
 
   get(): Observable<CalendarEntity> {
-    const date = this.date || new Date();
+    const date = this.date;
     return of(this.start(date));
   }
 
@@ -22,7 +22,7 @@ export class CalendarGatewayService implements CalendarGatewayInterface {
     const month = date.getMonth() - 1;
     const year = date.getFullYear();
 
-    return of(this.start(month < 0 ? new Date(year - 1, 11) : new Date(year, month)));
+    return of(this.start(new Date(year, month)));
   }
 
   next(): Observable<CalendarEntity> {
@@ -30,7 +30,7 @@ export class CalendarGatewayService implements CalendarGatewayInterface {
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
 
-    return of(this.start(month > 12 ? new Date(year + 1, 0) : new Date(year, month)));
+    return of(this.start(new Date(year, month)));
   }
 
   private start(date: Date) {

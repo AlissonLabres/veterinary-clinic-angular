@@ -1,24 +1,23 @@
 import { PresentErrorPipe } from './present-error.pipe';
 
-describe('Pipe: PresentError', () => {
+describe('PresentErrorPipe', () => {
+  let pipe: PresentErrorPipe;
+
+  beforeEach(() => pipe = new PresentErrorPipe());
+
   it('create an instance', () => {
-    const pipe = new PresentErrorPipe();
     expect(pipe).toBeTruthy();
   });
 
-  it('Should transforme message error when field not filled', () => {
-    const pipe = new PresentErrorPipe();
-
+  it('should transform the error message when a required field is not filled', () => {
     const value = { 'required': true };
     const exceptions = { 'required': { 'message': 'This field is required' } }
 
     expect(pipe.transform(value, exceptions)).toEqual('This field is required');
   });
 
-  it('Don`t should receive message error when value empty', () => {
-    const pipe = new PresentErrorPipe();
-
-    const value = { };
+  it('should not return an error message when the value is empty', () => {
+    const value = {};
     const exceptions = { 'required': { 'message': 'This field is required' }, }
 
     expect(pipe.transform(value, exceptions)).toEqual('');
