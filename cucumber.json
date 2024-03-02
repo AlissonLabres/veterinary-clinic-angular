@@ -1,0 +1,16 @@
+{
+  "default": {
+    "paths": ["tests/features/"],
+    "require": [
+      "tests/config/setup.ts",
+      "tests/config/hooks.ts",
+      "tests/steps/*.ts"
+    ],
+    "format": [
+      "progress-bar",
+      "html:tests/reports/cucumber-report.html",
+      "json:tests/reports/cucumber-report.json"
+    ],
+    "paralle": 2
+  }
+}
