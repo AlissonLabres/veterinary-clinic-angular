@@ -4,6 +4,7 @@ import { Observable, map } from 'rxjs';
 import { BulletEntity } from '../../domain/entity/bullet.entity';
 import { CalendarRepositoryInterface } from '../../domain/repository/calendar-repository.interface';
 import { ScheduleEntity } from '../../domain/entity/schedule.entity';
+import { environment } from '../../../environments/environments';
 
 @Injectable({ providedIn: 'root' })
 export class CalendarRepositoryService implements CalendarRepositoryInterface {
@@ -11,7 +12,7 @@ export class CalendarRepositoryService implements CalendarRepositoryInterface {
   constructor(private readonly httpClient: HttpClient) { }
 
   getAllSchedules(): Observable<ScheduleEntity[]> {
-    return this.httpClient.get<ScheduleEntity[]>('http://localhost:3000/schedule/1')
+    return this.httpClient.get<ScheduleEntity[]>(`${environment.api}/schedule/1`)
   }
 
   sendSchedule(bullet: BulletEntity): Observable<BulletEntity> {
@@ -22,11 +23,11 @@ export class CalendarRepositoryService implements CalendarRepositoryInterface {
       bullet_code: bullet.code
     };
 
-    return this.httpClient.post<BulletEntity>('http://localhost:3000/schedule/appointment', input);
+    return this.httpClient.post<BulletEntity>(`${environment.api}/schedule/appointment`, input);
   }
 
   getBulletsAvailable(): Observable<BulletEntity[]> {
-    return this.httpClient.get<{ bullets: BulletEntity[] }>('http://localhost:3000/bullets')
+    return this.httpClient.get<{ bullets: BulletEntity[] }>(`${environment.api}/bullets`)
       .pipe(map(({ bullets }) => bullets))
   }
 }

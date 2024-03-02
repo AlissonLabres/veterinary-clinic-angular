@@ -41,7 +41,7 @@ export class CalendarGatewayService implements CalendarGatewayInterface {
   private create(date: Date) {
     const calendar = this.restoreWith(date);
     const year = date.getFullYear();
-    const month = date.getMonth()
+    const month = date.getMonth() + 1;
     const dayWeek = new Date(year, month, 1).getDay();
 
     const lastMonth = {
