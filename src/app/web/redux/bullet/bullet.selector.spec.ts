@@ -1,4 +1,4 @@
-import { GetBulletSelector, GetBulletsDateSelector, GetBulletsTimePerDaySelector, GetLoadingBullet } from './bullet.selector';
+import { GetBulletSelector, GetBulletsDateSelector, GetBulletsTimePerDaySelector, GetErrorBullet, GetLoadingBullet, GetSuccessBullet } from './bullet.selector';
 import { BulletEntity } from '../../../domain/entity/bullet.entity';
 
 describe('Bullet Selectors', () => {
@@ -43,5 +43,17 @@ describe('Bullet Selectors', () => {
     state.bulletState.isLoading = false;
     const result = GetLoadingBullet(state);
     expect(result).toBeFalsy();
+  });
+
+  it('GetErrorBullet should return error', () => {
+    state.bulletState.error = 'error';
+    const result = GetErrorBullet(state);
+    expect(result).toEqual('error');
+  });
+
+  it('GetErrorBullet should return error', () => {
+    state.bulletState.created = 'OK';
+    const result = GetSuccessBullet(state);
+    expect(result).toEqual('OK');
   });
 });

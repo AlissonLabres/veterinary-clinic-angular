@@ -9,6 +9,7 @@ import { PresentErrorPipe } from '../../pipe/present-error.pipe';
 import { PhoneDirective } from '../../directive/phone.directive';
 import { TestBed } from '@angular/core/testing';
 import { GetErrorUser, GetLoadingUser, UserCreated } from '../../redux/user/user.selector';
+import { Router } from '@angular/router';
 
 describe('CreateUserComponent', () => {
   it('should render all required input fields', async () => {
@@ -36,14 +37,11 @@ describe('CreateUserComponent', () => {
   });
 
   it('should clean form when user created', async () => {
-    const { getByTestId } = await renderCreateUser(null, true);
+    const spyRouterNavigate = jest.fn().mockReturnValue(['/users']);
+    const { getByTestId } = await renderCreateUser(null, true, spyRouterNavigate);
     const form = getByTestId('form-create-user');
 
-    expect(form).toHaveFormValues({
-      name: '',
-      email: '',
-      phone: ''
-    });
+    expect(spyRouterNavigate).toHaveBeenCalledWith(['/users']);
   });
 
   it('should dispatch a create user action with form values when form is submitted', async () => {
@@ -82,7 +80,7 @@ describe('CreateUserComponent', () => {
   });
 });
 
-const renderCreateUser = async (errorMessage: string | null = null, created: boolean = false) => {
+const renderCreateUser = async (errorMessage: string | null = null, created: boolean = false, routerMock: jest.Mock = jest.fn()) => {
   const selectorLoadingUserMock = {
     selector: GetLoadingUser,
     value: 'false',
@@ -101,6 +99,12 @@ const renderCreateUser = async (errorMessage: string | null = null, created: boo
   return render(CreateUserComponent, {
     declarations: [PresentErrorPipe, PhoneDirective],
     imports: [ReactiveFormsModule],
-    providers: [provideMockStore({ selectors: [selectorLoadingUserMock, selectorErrorUserMock, selectorUserCreatedMock]})],
+    providers: [
+      {
+        provide: Router,
+        useValue: { navigate: routerMock }
+      },
+      provideMockStore({ selectors: [selectorLoadingUserMock, selectorErrorUserMock, selectorUserCreatedMock] })
+    ],
   })
 }

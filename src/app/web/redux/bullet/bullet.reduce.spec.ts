@@ -3,7 +3,10 @@ import { BulletReducer } from './bullet.reducer';
 import {
   GetBullet,
   GetBulletSuccess,
-  GetBulletError
+  GetBulletError,
+  SendBulletSuccess,
+  SendBulletError,
+  SendBullet
 } from './bullet.action';
 import { CleanSelectionCalendar, SelectDateCalendar, SelectHourCalendar } from '../calendar/calendar.action';
 
@@ -11,6 +14,8 @@ const initialState: BulletStateInterface = {
   entities: [],
   date: undefined,
   hour: undefined,
+  error: undefined,
+  created: undefined,
   isLoading: 'false'
 }
 
@@ -86,5 +91,30 @@ describe('BulletReducer', () => {
 
     expect(result.date).toBeUndefined();
     expect(result.hour).toBeUndefined();
+  });
+
+  it('should update state when SendBulletSuccess action is dispatched', () => {
+    const action = SendBulletSuccess();
+    const result = BulletReducer(initialState, action);
+
+    expect(result.isLoading).toBe('false');
+    expect(result.created).toBe('OK');
+  });
+
+  it('should update state when SendBulletError action is dispatched', () => {
+    const error = 'Error message';
+    const action = SendBulletError({ error });
+    const result = BulletReducer(initialState, action);
+
+    expect(result.error).toEqual(error);
+    expect(result.isLoading).toBe('false');
+  });
+
+
+  it('should set isLoading to true when SendBullet action is dispatched', () => {
+    const action = SendBullet({ entity: { date: new Date(), hour: '10:00' } });
+    const result = BulletReducer(initialState, action);
+
+    expect(result.isLoading).toBe('true');
   });
 });

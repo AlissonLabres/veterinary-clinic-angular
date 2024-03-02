@@ -41,3 +41,13 @@ export const GetLoadingBullet = createSelector(
   GetBulletState,
   (state: BulletStateInterface) => state.isLoading
 );
+
+export const GetErrorBullet = createSelector(
+  GetBulletState,
+  (state: BulletStateInterface) => state.error
+);
+
+export const GetSuccessBullet = createSelector(
+  GetBulletState,
+  (state: BulletStateInterface) => state.created
+);

@@ -20,10 +20,10 @@
               </tr>
             </thead>
             <tbody class="table-group-divider">
-              <tr *ngFor="let user of users" data-testId="list-users">
-                <td>{{ user?.user_name }}</td>
-                <td>{{ user?.user_email }}</td>
-                <td>{{ user?.user_phone | phone }}</td>
+              <tr *ngFor="let user of users; index as index" data-testId="list-users">
+                <td [attr.data-testId]="'list-users-name-' + index">{{ user?.user_name }}</td>
+                <td [attr.data-testId]="'list-users-email-' + index">{{ user?.user_email }}</td>
+                <td [attr.data-testId]="'list-users-phone-' + index">{{ user?.user_phone | phone }}</td>
               </tr>
             </tbody>
           </table>

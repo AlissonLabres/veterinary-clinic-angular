@@ -5,7 +5,8 @@ import { Store } from '@ngrx/store';
 import { CreateUser } from '../../redux/user/user.action';
 import { UserCreated, GetLoadingUser, GetErrorUser } from '../../redux/user/user.selector';
 import { Subject } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
+import { takeUntil, tap, filter } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-user',
@@ -16,6 +17,7 @@ export class CreateUserComponent implements OnInit, OnDestroy {
 
   store = inject(Store);
   formBuilder = inject(NonNullableFormBuilder);
+  router: Router = inject(Router);
 
   exceptions = MESSAGE_EXCEPTIONS;
 
@@ -31,13 +33,12 @@ export class CreateUserComponent implements OnInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject();
 
   ngOnInit() {
-    this.userCreated$.pipe(takeUntil(this.destroy$)).subscribe(
-      (created) => {
-        if (created) {
-          this.user.reset();
-        }
-      }
-    );
+    this.userCreated$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter((created) => created),
+      )
+      .subscribe((created) => this.router.navigate(['/users']));
   }
 
   ngOnDestroy(): void {

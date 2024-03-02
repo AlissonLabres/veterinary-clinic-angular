@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { ReplaySubject, of, pipe, take, tap } from 'rxjs';
+import { ReplaySubject, of, pipe, take, tap, throwError } from 'rxjs';
 import { CalendarRepositoryToken } from '../../../config/injection-token.repositories';
 import { CalendarRepositoryInterface } from '../../../domain/repository/calendar-repository.interface';
-import { GetBullet, GetBulletSuccess, SendBullet, SendBulletSuccess } from './bullet.action';
+import { GetBullet, GetBulletSuccess, SendBullet, SendBulletError, SendBulletSuccess } from './bullet.action';
 import { BulletEffect } from './bullet.effect';
 import { BulletInterface } from './bullet.state';
 
@@ -59,6 +59,19 @@ describe('BulletEffect', () => {
       const outcome = SendBulletSuccess();
 
       jest.spyOn(calendarRepository, 'sendSchedule').mockReturnValue(of({ id: undefined, code: '2022-02-01T12:00' }));
+      actions$.next(action);
+
+      effects.sendBullet$
+        .pipe(take(1))
+        .subscribe(action => expect(action).toEqual(outcome));
+    });
+
+    it('should return a SendBulletError action, on error', () => {
+      const action = SendBullet({ entity: { date: new Date('2022-02-01T12:00'), hour: '12:00' } });
+      const outcome = SendBulletError({ error: 'Error' });
+
+      jest.spyOn(calendarRepository, 'sendSchedule')
+        .mockReturnValue(throwError(() => ({ error: { message: 'Error' } })));
       actions$.next(action);
 
       effects.sendBullet$

@@ -10,19 +10,20 @@ describe(DatesComponent.name, () => {
     await renderComponent()
 
     expect(screen.queryByTestId('previous')).toHaveTextContent('31');
-    expect(screen.queryAllByTestId('day')[0]).toHaveTextContent('8');
+    expect(screen.getByTestId('day-8')).toHaveTextContent('8');
     expect(screen.queryByTestId('next')).toHaveTextContent('1');
   });
 
   it('should create component and view date active and not active', async () => {
     await renderComponent();
 
-    const days = screen.getAllByTestId('day');
-    const warning = days[0].classList.item(6);
-    const bold = days[0].classList.item(7);
-    const cursor = days[0].classList.item(8);
+    const selectDay = screen.getByTestId('day-8');
+    const warning = selectDay.classList.item(6);
+    const bold = selectDay.classList.item(7);
+    const cursor = selectDay.classList.item(8);
 
-    const secondary = days[1].classList.item(6);
+    const notSelectDay = screen.getByTestId('day-13');
+    const secondary = notSelectDay.classList.item(6);
 
     expect(warning).toEqual('text-indigo');
     expect(bold).toEqual('fw-bold');
@@ -37,7 +38,7 @@ describe(DatesComponent.name, () => {
     const selectSpy = jest.fn();
     await renderComponent(selectSpy);
 
-    const day = screen.getAllByTestId('day')[0];
+    const day = screen.getByTestId('day-8');
     await user.click(day);
 
     expect(selectSpy).toHaveBeenCalledTimes(1);
@@ -49,7 +50,7 @@ describe(DatesComponent.name, () => {
     const selectSpy = jest.fn();
     await renderComponent(selectSpy);
 
-    const day = screen.getAllByTestId('day')[1];
+    const day = screen.getByTestId('day-13');
     await user.click(day);
 
     expect(selectSpy).toHaveBeenCalledTimes(0);

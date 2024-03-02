@@ -22,7 +22,7 @@ export const GetErrorUser = createSelector(
 export const UserCreated = createSelector(
   GetUserState,
   (state: UserStateInterface) => {
-    return state.isLoading === 'false' && state.entity
+    return state.isLoading === 'false' && (state.entity !== null)
   }
 );
 

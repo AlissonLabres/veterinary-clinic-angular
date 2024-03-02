@@ -7,7 +7,7 @@
   >{{ day }}</div>
   <div
     hover-day
-    data-testid="day"
+    [attr.data-testid]="'day-' + day"
     class="link-underline link-underline-opacity-0 my-2 py-2 mx-1 position-relative"
     *ngFor="let day of calendar.current"
     [ngClass]="compateDate(day)"
