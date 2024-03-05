@@ -6,8 +6,6 @@ export interface CalendarRepositoryInterface {
 
   getAllSchedules(): Observable<ScheduleEntity[]>;
 
-  getBulletsAvailable(): Observable<BulletEntity[]>;
-
   sendSchedule(bullet: BulletEntity): Observable<BulletEntity>;
 
 }

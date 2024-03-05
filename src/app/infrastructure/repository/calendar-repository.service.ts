@@ -25,9 +25,4 @@ export class CalendarRepositoryService implements CalendarRepositoryInterface {
 
     return this.httpClient.post<BulletEntity>(`${environment.api}/schedule/appointment`, input);
   }
-
-  getBulletsAvailable(): Observable<BulletEntity[]> {
-    return this.httpClient.get<{ bullets: BulletEntity[] }>(`${environment.api}/bullets`)
-      .pipe(map(({ bullets }) => bullets))
-  }
 }
