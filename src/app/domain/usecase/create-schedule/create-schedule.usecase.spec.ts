@@ -2,7 +2,7 @@ import { TestBed } from "@angular/core/testing";
 import { ScheduleRepositoryToken } from "../../../config/injection-token.repositories";
 import { ScheduleRepositoryInterface } from "../../repository/schedule-repository.interface";
 import { CreateScheduleUsecase } from "./create-schedule.usecase";
-import { ScheduleOutput } from "./schedule-output";
+import { CreateScheduleOutput } from "./create-schedule-output";
 import { of, take } from "rxjs";
 
 describe('CreateScheduleUsecase', () => {

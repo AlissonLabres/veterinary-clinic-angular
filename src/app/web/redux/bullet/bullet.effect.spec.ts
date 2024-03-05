@@ -5,10 +5,8 @@ import { GetBullet, GetBulletSuccess, SendBullet, SendBulletError, SendBulletSuc
 import { BulletEffect } from './bullet.effect';
 import { BulletInterface } from './bullet.state';
 import { GetBulletsAvailableUsecase } from '../../../domain/usecase/get-bullets-available/get-bullets-available.usecase';
-import { CalendarRepositoryToken } from '../../../config/injection-token.repositories';
-import { CalendarRepositoryInterface } from '../../../domain/repository/calendar-repository.interface';
 import { CreateScheduleUsecase } from '../../../domain/usecase/create-schedule/create-schedule.usecase';
-import { ScheduleOutput } from '../../../domain/usecase/create-schedule/schedule-output';
+import { CreateScheduleOutput } from '../../../domain/usecase/create-schedule/create-schedule-output';
 
 describe('BulletEffect', () => {
   let actions$: ReplaySubject<any>;
@@ -68,7 +66,7 @@ describe('BulletEffect', () => {
   describe('sendBullet$', () => {
     it('should return a SendBulletSuccess action, on success', () => {
       const action = SendBullet({ entity: { date: new Date('2022-02-01T12:00'), hour: '12:00' } });
-      const outputMock = { id: '0001', status: 'SCHEDULED' } as unknown as ScheduleOutput;
+      const outputMock = { id: '0001', status: 'SCHEDULED' } as unknown as CreateScheduleOutput;
       const outcome = SendBulletSuccess();
 
       jest.spyOn(createScheduleUsecase, 'execute').mockReturnValue(of(outputMock));

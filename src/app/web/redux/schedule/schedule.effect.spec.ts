@@ -2,18 +2,18 @@ import { TestBed } from "@angular/core/testing";
 import { provideMockActions } from "@ngrx/effects/testing";
 import { ReplaySubject, of } from "rxjs";
 
-import { CalendarRepositoryToken } from "../../../config/injection-token.repositories";
 import { CalendarRepositoryInterface } from "../../../domain/repository/calendar-repository.interface";
 import { ScheduleEffect } from "./schedule.effect";
 import { GetSchedules, GetSchedulesSuccess } from "./schedule.action";
+import { GetSchedulesByUserUsecase } from "../../../domain/usecase/get-schedules-by-user/get-schedules-by-user.usecase";
 
 describe('ScheduleEffect', () => {
   let actions$: ReplaySubject<any>;
   let effects: ScheduleEffect;
-  let calendarRepository: CalendarRepositoryInterface;
+  let getSchedulesByUserUsecase: GetSchedulesByUserUsecase;
 
   beforeEach(() => {
-    const calendarRepositoryTokenMock = {
+    const getScheduleByUserUsecaseMock = {
       getBulletsAvailable: jest.fn().mockReturnValue(of()),
       sendSchedule: jest.fn().mockReturnValue(of())
     };
@@ -23,14 +23,14 @@ describe('ScheduleEffect', () => {
         ScheduleEffect,
         provideMockActions(() => actions$),
         {
-          provide: CalendarRepositoryToken,
-          useValue: calendarRepositoryTokenMock
+          provide: GetSchedulesByUserUsecase,
+          useValue: getScheduleByUserUsecaseMock
         }
       ]
     });
 
     effects = TestBed.inject(ScheduleEffect);
-    calendarRepository = TestBed.inject(CalendarRepositoryToken);
+    getSchedulesByUserUsecase = TestBed.inject(GetSchedulesByUserUsecase);
     actions$ = new ReplaySubject(1);
   });
 
@@ -44,7 +44,7 @@ describe('ScheduleEffect', () => {
       const action = GetSchedules();
       const outcome = GetSchedulesSuccess({ entities: [value] });
 
-      calendarRepository.getAllSchedules = jest.fn().mockReturnValue(of([value]));
+      getSchedulesByUserUsecase.execute = jest.fn().mockReturnValue(of([value]));
       actions$.next(action);
 
       effects.loadingCalendar$.subscribe(action => {

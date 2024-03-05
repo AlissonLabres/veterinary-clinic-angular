@@ -2,9 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, repeat, switchMap } from 'rxjs';
 
-import { CalendarRepositoryInterface } from '../../../domain/repository/calendar-repository.interface';
-import { CalendarRepositoryToken } from '../../../config/injection-token.repositories';
-
 import { GetBullet, GetBulletSuccess, SendBullet, SendBulletError, SendBulletSuccess } from './bullet.action';
 import { BulletEntity } from '../../../domain/entity/bullet.entity';
 import { BulletEntityInterface, BulletInterface } from './bullet.state';

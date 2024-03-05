@@ -5,4 +5,6 @@ export interface ScheduleRepositoryInterface {
 
   createSchedule(bullet_code: string): Observable<ScheduleEntity>;
 
+  getScheduleByUser(id: string): Observable<ScheduleEntity[]>;
+
 }

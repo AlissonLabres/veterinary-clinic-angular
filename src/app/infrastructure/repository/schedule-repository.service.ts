@@ -21,4 +21,8 @@ export class ScheduleRepositoryService implements ScheduleRepositoryInterface {
     return this.httpClient.post<ScheduleEntity>(`${environment.api}/schedule/appointment`, input);
   }
 
+  getScheduleByUser(id: string): Observable<ScheduleEntity[]> {
+    return this.httpClient.get<ScheduleEntity[]>(`${environment.api}/schedule/${id}`)
+  }
+
 }
