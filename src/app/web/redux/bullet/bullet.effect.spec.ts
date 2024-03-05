@@ -4,23 +4,25 @@ import { ReplaySubject, of, pipe, take, tap, throwError } from 'rxjs';
 import { GetBullet, GetBulletSuccess, SendBullet, SendBulletError, SendBulletSuccess } from './bullet.action';
 import { BulletEffect } from './bullet.effect';
 import { BulletInterface } from './bullet.state';
-import { GetBulletsAvailableUsecase } from '../../../domain/usecase/get-bullets-available.usecase';
+import { GetBulletsAvailableUsecase } from '../../../domain/usecase/get-bullets-available/get-bullets-available.usecase';
 import { CalendarRepositoryToken } from '../../../config/injection-token.repositories';
 import { CalendarRepositoryInterface } from '../../../domain/repository/calendar-repository.interface';
+import { CreateScheduleUsecase } from '../../../domain/usecase/create-schedule/create-schedule.usecase';
+import { ScheduleOutput } from '../../../domain/usecase/create-schedule/schedule-output';
 
 describe('BulletEffect', () => {
   let actions$: ReplaySubject<any>;
   let effects: BulletEffect;
   let getBulletsAvailableUsecase: GetBulletsAvailableUsecase;
-  let calendarRepository: CalendarRepositoryInterface;
+  let createScheduleUsecase: CreateScheduleUsecase;
 
   beforeEach(() => {
     const getBulletsAvailableUsecaseMock = {
       execute: jest.fn().mockReturnValue(of()),
     };
 
-    const calendarRepositoryTokenMock = {
-      sendSchedule: jest.fn().mockReturnValue(of())
+    const createScheduleUsecaseMock = {
+      execute: jest.fn().mockReturnValue(of())
     };
 
     TestBed.configureTestingModule({
@@ -32,15 +34,15 @@ describe('BulletEffect', () => {
           useValue: getBulletsAvailableUsecaseMock
         },
         {
-          provide: CalendarRepositoryToken,
-          useValue: calendarRepositoryTokenMock
+          provide: CreateScheduleUsecase,
+          useValue: createScheduleUsecaseMock
         }
       ]
     });
 
     effects = TestBed.inject(BulletEffect);
     getBulletsAvailableUsecase = TestBed.inject(GetBulletsAvailableUsecase);
-    calendarRepository = TestBed.inject(CalendarRepositoryToken);
+    createScheduleUsecase = TestBed.inject(CreateScheduleUsecase);
     actions$ = new ReplaySubject(1);
   });
 
@@ -66,9 +68,10 @@ describe('BulletEffect', () => {
   describe('sendBullet$', () => {
     it('should return a SendBulletSuccess action, on success', () => {
       const action = SendBullet({ entity: { date: new Date('2022-02-01T12:00'), hour: '12:00' } });
+      const outputMock = { id: '0001', status: 'SCHEDULED' } as unknown as ScheduleOutput;
       const outcome = SendBulletSuccess();
 
-      jest.spyOn(calendarRepository, 'sendSchedule').mockReturnValue(of({ id: '0001', code: '2022-02-01T12:00' }));
+      jest.spyOn(createScheduleUsecase, 'execute').mockReturnValue(of(outputMock));
       actions$.next(action);
 
       effects.sendBullet$
@@ -80,7 +83,7 @@ describe('BulletEffect', () => {
       const action = SendBullet({ entity: { date: new Date('2022-02-01T12:00'), hour: '12:00' } });
       const outcome = SendBulletError({ error: 'Error' });
 
-      jest.spyOn(calendarRepository, 'sendSchedule')
+      jest.spyOn(createScheduleUsecase, 'execute')
         .mockReturnValue(throwError(() => ({ error: { message: 'Error' } })));
       actions$.next(action);
 
