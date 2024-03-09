@@ -7,20 +7,20 @@ import { MockComponents } from 'ng-mocks';
 import { render, screen } from '@testing-library/angular';
 import userEvent from '@testing-library/user-event';
 
-import { GetBulletSelector, GetBulletsDateSelector, GetErrorBullet, GetLoadingBullet, GetSuccessBullet } from '../../redux/bullet/bullet.selector';
+import { GetDatesAvailableSelector, GetErrorBullet, GetLoadingBullet, GetTimesAvailabelPerDaySelector } from '../../redux/bullet/bullet.selector';
 
 import { CalendarComponent } from './calendar.component';
 import { DatesComponent } from '../dates/dates.component';
 import { TimesComponent } from '../times/times.component';
 
 import { GetCalendarSelector } from '../../redux/calendar/calendar.selector';
-import { of } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
+import { CreateSuccessSchedule } from '../../redux/schedule/schedule.selector';
 
 describe(CalendarComponent.name, () => {
   it('should create component and view loading page', async () => {
-    await renderCalendar('true')
+    await renderCalendar(true)
     expect(screen.queryByTestId('loading-page')).toBeInTheDocument();
     expect(screen.queryByTestId('card-page')).not.toBeInTheDocument();
   });
@@ -37,7 +37,7 @@ describe(CalendarComponent.name, () => {
   });
 
   it('should create component and error', async () => {
-    await renderCalendar('false', jest.fn(), undefined, 'Error message');
+    await renderCalendar(false, undefined, 'Error message');
     expect(screen.queryByTestId('alert-error')).toHaveTextContent('Error message');
   });
 
@@ -52,7 +52,7 @@ describe(CalendarComponent.name, () => {
     const component = fixture.componentInstance;
     component.ngOnInit();
 
-    expect(store.dispatch).toHaveBeenNthCalledWith(1, { type: '[Bullet] Load dates to bullet' });
+    expect(store.dispatch).toHaveBeenNthCalledWith(1, { type: '[Bullet] Loading bullets' });
     expect(store.dispatch).toHaveBeenNthCalledWith(2, { type: '[Calendar] Loading calendar' });
   });
 
@@ -82,88 +82,71 @@ describe(CalendarComponent.name, () => {
     expect(store.dispatch).toHaveBeenCalledWith({ type: '[Calendar] Loading next month' });
   });
 
-  it('should create component, click to next month and ensures to it was called once', async () => {
+  it('should create component, click to create schedule and ensures to it was called once', async () => {
     const user = userEvent.setup();
-    await renderCalendar();
+    const { fixture } = await renderCalendar();
 
+    fixture.componentInstance.schedule = { date: '2023-02-08', hour: '16:00' };
+    fixture.detectChanges();
     const store = TestBed.inject(MockStore);
     store.dispatch = jest.fn();
 
-    const sendBullet = screen.getByTestId('send-bullet');
-    await user.click(sendBullet);
+    const createSchedule = screen.getByTestId('create-schedule-button');
+    await user.click(createSchedule);
 
     expect(store.dispatch).toHaveBeenCalledWith({
-      type: '[Bullet] Send bullet to server',
-      entity: {
-        date: "2023-02-08",
-        hour: "16:00",
-      }
-    });
-  });
-
-  it('should create component, click to send bullet and ensures to it was called once', async () => {
-    const user = userEvent.setup();
-    await renderCalendar();
-
-    const store = TestBed.inject(MockStore);
-    store.dispatch = jest.fn();
-
-    const sendBullet = screen.getByTestId('send-bullet');
-    await user.click(sendBullet);
-
-    expect(store.dispatch).toHaveBeenCalledWith({
-      type: '[Bullet] Send bullet to server',
-      entity: {
-        date: "2023-02-08",
-        hour: "16:00",
-      }
+      type: '[Schedule] Creating schedule',
+      date: "2023-02-08",
+      hour: "16:00",
     });
   });
 
   it('should create component, emit to select day and ensures to it was called once', async () => {
-    const { fixture, rerender } = await renderCalendar();
+    const { fixture } = await renderCalendar();
     const store = TestBed.inject(MockStore);
     store.dispatch = jest.fn();
 
-    rerender();
-
     const calendarComponent = fixture.componentInstance;
-    calendarComponent.selectDay(new Date('2023-02-08'));
+    calendarComponent.selectDay('2023-02-08');
 
-    expect(store.dispatch).toHaveBeenCalledWith({
-      type: '[Calendar] Select date calendar success',
-      value: new Date('2023-02-08')
-    });
+    expect(calendarComponent.schedule?.date).toBe('2023-02-08');
   });
 
   it('should create component, emit to select bullet and ensures to it was called once', async () => {
-    const { fixture, rerender } = await renderCalendar();
+    const { fixture } = await renderCalendar();
     const store = TestBed.inject(MockStore);
     store.dispatch = jest.fn();
 
-    rerender();
-
     const calendarComponent = fixture.componentInstance;
+    calendarComponent.schedule = { date: '2023-02-08', hour: '' };
     calendarComponent.selectBullet('18:00');
 
-    expect(store.dispatch).toHaveBeenCalledWith({
-      type: '[Calendar] Select hour calendar success',
-      value: "18:00"
-    });
+    expect(calendarComponent.schedule?.hour).toBe('18:00');
+  });
+
+  it('should create component, emit to createSchedule and ensures to it was called once', async () => {
+    const { fixture } = await renderCalendar();
+    const store = TestBed.inject(MockStore);
+    store.dispatch = jest.fn();
+
+    const calendarComponent = fixture.componentInstance;
+    calendarComponent.schedule = undefined;
+    calendarComponent.createSchedule();
+
+    expect(store.dispatch).toHaveBeenCalledTimes(0);
   });
 
   it('should create component, subcribe to bullet success and view message', async () => {
     const spy = jest.fn().mockReturnValue(['/']);
-    await renderCalendar('false', jest.fn(), 'OK', undefined, spy);
+    await renderCalendar(false, true, undefined, spy);
 
     expect(spy).toHaveBeenCalledWith(['/']);
   });
 });
 
 const renderCalendar = async (
-  status: string = 'false',
-  selectSpy: jest.Mock = jest.fn(),
-  success: string | undefined = undefined,
+  status: boolean | undefined = false,
+  success: boolean | undefined = undefined,
   error: string | undefined = undefined,
   routerMock: jest.Mock = jest.fn(),
 ) => {
@@ -172,13 +155,8 @@ const renderCalendar = async (
     value: status,
   };
 
-  const selectorBulletsMock = {
-    selector: GetBulletSelector,
-    value: { date: '2023-02-08', hour: '16:00' },
-  };
-
-  const selectorBulletAvailable = {
-    selector: GetBulletsDateSelector,
+  const selectorDatesAvailable = {
+    selector: GetDatesAvailableSelector,
     value: ['2023-02-08', '2023-02-13'],
   };
 
@@ -187,8 +165,13 @@ const renderCalendar = async (
     value: error,
   };
 
-  const selectorBulletSuccess = {
-    selector: GetSuccessBullet,
+  const selectorTimesAvailable = {
+    selector: GetTimesAvailabelPerDaySelector('2023-02-08'),
+    value: ['16:00', '18:00'],
+  };
+
+  const selectorScheduleSuccess = {
+    selector: CreateSuccessSchedule,
     value: success,
   };
 
@@ -205,7 +188,6 @@ const renderCalendar = async (
   return render(CalendarComponent, {
     imports: [RouterTestingModule],
     declarations: MockComponents(DatesComponent, TimesComponent),
-    componentProperties: { selectDay: selectSpy },
     providers: [
       {
         provide: Router,
@@ -215,12 +197,12 @@ const renderCalendar = async (
       },
       provideMockStore({
         selectors: [
+          selectorScheduleSuccess,
           selectorLoadingBulletMock,
-          selectorBulletAvailable,
+          selectorDatesAvailable,
           selectorCalendarMock,
-          selectorBulletsMock,
-          selectorBulletError,
-          selectorBulletSuccess,
+          selectorTimesAvailable,
+          selectorBulletError
         ]
       })
     ],

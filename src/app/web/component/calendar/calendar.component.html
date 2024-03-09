@@ -1,69 +1,49 @@
-<ng-container *ngIf="isLoadingBullet$ | async as loadingBullet">
-  <div
-    class="card border-0 mx-auto"
-    *ngIf="loadingBullet === 'false'; else loadingCalenderTemplate"
-    data-testid="card-page"
-  >
-    <ng-container *ngIf="bullets$ | async as bullet">
-      <ng-container *ngIf="bulletError$ | async as error">
-        <div data-testId="alert-error" class="mt-3 alert alert-danger" role="alert">
-          {{ error }}
-        </div>
-      </ng-container>
-      <div class="row justify-content-center" *ngIf="calendar$ | async as calendar">
-        <div class="text-center col-lg-8 p-3 rounded-5">
-          <div class="row text-center my-4">
-            <div class="col" data-testid="previous-month" (click)="previousMonth()">
-              <a>
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 128 128">
-                  <path fill="#666" d="M88.2 3.8L35.8 56.23 28 64l7.8 7.78 52.4 52.4 9.78-7.76L45.58 64l52.4-52.4z" />
-                </svg>
-              </a>
-            </div>
-            <div class="col">
-              <div data-testid="month-year-date"> {{ monthAndFullYear(calendar.date) | uppercase }} </div>
-            </div>
-            <div class="col" data-testid="next-month" (click)="nextMonth()">
-              <a>
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 128 128">
-                  <path fill="#666" d="M38.8 124.2l52.4-52.42L99 64l-7.77-7.78-52.4-52.4-9.8 7.77L81.44 64 29 116.42z" />
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          <app-dates
-            *ngIf="bulletsDateAvailable$ | async as bulletsDateAvailable"
-            data-testid="app-dates"
-            [bulletsDateAvailable]="bulletsDateAvailable"
-            [calendar]="calendar"
-            (day)="selectDay($event)"
-          ></app-dates>
-        </div>
-        <div class="col-lg-2 col">
-          <app-times
-            *ngIf="bulletsTimeAvailable$ | async as bulletsTimeAvailable"
-            [bulletsTimeAvailable]="bulletsTimeAvailable"
-            (bullet)="selectBullet($event)"
-          ></app-times>
-        </div>
-      </div>
-
-      <div class="my-5">
-        <button
-          *ngIf="bullet.date && bullet.hour"
-          data-testid="send-bullet"
-          type="button"
-          class="btn btn-indigo btn-lg ms-4"
-          (click)="sendBullet(bullet)"
-        >Enviar</button>
-      </div>
-    </ng-container>
+<ng-container *ngIf="isLoadingBullet$ | async as isLoading; else calendarTemplate">
+  <div class="spinner-border" role="status" data-testid="loading-page">
+    <span class="visually-hidden">Loading...</span>
   </div>
 </ng-container>
 
-<ng-template #loadingCalenderTemplate>
-  <div class="spinner-border" role="status" data-testid="loading-page">
-    <span class="visually-hidden">Loading...</span>
+<ng-template #calendarTemplate>
+  <div class="card border-0 mx-auto" data-testid="card-page">
+    <ng-container *ngIf="bulletError$ | async as error">
+      <div data-testId="alert-error" class="mt-3 alert alert-danger" role="alert">
+        {{ error }}
+      </div>
+    </ng-container>
+    <div class="row justify-content-center" *ngIf="calendar$ | async as calendar">
+      <div class="text-center col-lg-8 p-3 rounded-5">
+        <div class="row text-center my-4">
+          <div class="col" data-testid="previous-month" (click)="previousMonth()">
+            <a>
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 128 128">
+                <path fill="#666" d="M88.2 3.8L35.8 56.23 28 64l7.8 7.78 52.4 52.4 9.78-7.76L45.58 64l52.4-52.4z" />
+              </svg>
+            </a>
+          </div>
+          <div class="col">
+            <div data-testid="month-year-date"> {{ monthAndFullYear(calendar.date) | uppercase }} </div>
+          </div>
+          <div class="col" data-testid="next-month" (click)="nextMonth()">
+            <a>
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 128 128">
+                <path fill="#666" d="M38.8 124.2l52.4-52.42L99 64l-7.77-7.78-52.4-52.4-9.8 7.77L81.44 64 29 116.42z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <app-dates data-testid="app-dates" [bulletsDateAvailable]="datesAvailable$ | async" [calendar]="calendar"
+          (day)="selectDay($event)"></app-dates>
+      </div>
+      <div class="col-lg-2 col">
+        <app-times (bullet)="selectBullet($event)" [bulletsTimeAvailable]="timesAvailable$ | async"></app-times>
+      </div>
+    </div>
+
+    <div class="my-5">
+      <button *ngIf="schedule?.date && schedule?.hour" data-testid="create-schedule-button" type="button"
+        class="btn btn-indigo btn-lg ms-4" (click)="createSchedule()">Enviar</button>
+    </div>
   </div>
 </ng-template>

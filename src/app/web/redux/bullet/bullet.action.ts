@@ -1,15 +1,10 @@
 import { createAction, props } from "@ngrx/store";
 
-import { BulletEntityInterface, BulletInterface } from "./bullet.state";
+import { BulletInterface } from "./bullet.state";
 
-const propsBulletEntity = props<{ entities: BulletInterface[] }>();
-const propsSendEntity = props<{ entity: BulletEntityInterface }>();
-const propsSendError = props<{ error: string }>();
+const propsBulletEntities = props<{ entities: BulletInterface[] }>();
+const propsBulletError = props<{ message: string }>();
 
-export const GetBullet = createAction('[Bullet] Load dates to bullet');
-export const GetBulletError = createAction('[Bullet] Load dates to bullet error')
-export const GetBulletSuccess = createAction('[Bullet] Load dates to bullet success', propsBulletEntity);
-
-export const SendBullet = createAction('[Bullet] Send bullet to server', propsSendEntity);
-export const SendBulletSuccess = createAction('[Bullet] Send success to server');
-export const SendBulletError = createAction('[Bullet] Send error to server', propsSendError);
+export const GetBulletsAvailable = createAction('[Bullet] Loading bullets');
+export const GetBulletsAvailableError = createAction('[Bullet] Error loading bullets', propsBulletError);
+export const GetBulletsAvailableSuccess = createAction('[Bullet] Success loading bullets', propsBulletEntities);

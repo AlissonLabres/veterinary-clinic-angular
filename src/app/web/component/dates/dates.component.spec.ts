@@ -55,11 +55,21 @@ describe(DatesComponent.name, () => {
 
     expect(selectSpy).toHaveBeenCalledTimes(0);
   });
+
+  it('should create component with null bullets and click in date inactive and not emitter date', async () => {
+    const user = userEvent.setup();
+
+    const selectSpy = jest.fn();
+    await renderComponent(selectSpy, null);
+
+    const day = screen.getByTestId('day-13');
+    await user.click(day);
+
+    expect(selectSpy).toHaveBeenCalledTimes(0);
+  });
 });
 
-const renderComponent = async (selectSpy: jest.Mock = jest.fn()) => {
-  const bulletsDateAvailable = ['2023-03-08']
-
+const renderComponent = async (selectSpy: jest.Mock = jest.fn(), bulletsDateAvailable: string[] | null = ['2023-03-08']) => {
   const calendar = {
     date: new Date('2023-03-04'),
     last: [31],

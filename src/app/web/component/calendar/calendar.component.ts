@@ -1,15 +1,19 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
+import { Subject, of } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
 import { MonthNameEnum } from './calendar-month-name.component';
 
-import { GetBulletSelector, GetBulletsDateSelector, GetBulletsTimePerDaySelector, GetErrorBullet, GetLoadingBullet, GetSuccessBullet } from '../../redux/bullet/bullet.selector';
-import { GetBullet, SendBullet } from '../../redux/bullet/bullet.action';
+import { GetBulletsAvailable } from '../../redux/bullet/bullet.action';
+import { GetErrorBullet, GetLoadingBullet, GetDatesAvailableSelector, GetTimesAvailabelPerDaySelector } from '../../redux/bullet/bullet.selector';
 
 import { GetCalendarSelector } from '../../redux/calendar/calendar.selector';
-import { CleanSelectionCalendar, GetCalendar, NextMonthCalendar, PreviousMonthCalendar, SelectDateCalendar, SelectHourCalendar } from '../../redux/calendar/calendar.action';
-import { Subject, filter, takeUntil } from 'rxjs';
-import { Router } from '@angular/router';
+import { GetCalendar, NextMonthCalendar, PreviousMonthCalendar } from '../../redux/calendar/calendar.action';
+
+import { CreateSchedule } from '../../redux/schedule/schedule.action';
+import { CreateErrorSchedule, CreateSuccessSchedule } from '../../redux/schedule/schedule.selector';
 
 @Component({
   selector: 'app-calendar',
@@ -22,24 +26,27 @@ export class CalendarComponent implements OnInit, OnDestroy {
   store: Store = inject(Store);
 
   isLoadingBullet$ = this.store.pipe(select(GetLoadingBullet));
-  bullets$ = this.store.pipe(select(GetBulletSelector));
-  bulletsDateAvailable$ = this.store.pipe(select(GetBulletsDateSelector));
-  bulletsTimeAvailable$ = this.store.pipe(select(GetBulletsTimePerDaySelector));
-  calendar$ = this.store.pipe(select(GetCalendarSelector));
   bulletError$ = this.store.pipe(select(GetErrorBullet));
-  bulletSuccess$ = this.store.pipe(select(GetSuccessBullet));
 
-  day: Date | undefined = undefined;
+  calendar$ = this.store.pipe(select(GetCalendarSelector));
+
+  datesAvailable$ = this.store.pipe(select(GetDatesAvailableSelector));
+  timesAvailable$ = of<string[]>([]);
+
+  createSuccess$ = this.store.pipe(select(CreateSuccessSchedule));
+  scheduleError$ = this.store.pipe(select(CreateErrorSchedule));
+
   destroy$ = new Subject();
+  schedule?: { date: string, hour: string };
 
   ngOnInit(): void {
-    this.store.dispatch(GetBullet());
+    this.store.dispatch(GetBulletsAvailable());
     this.store.dispatch(GetCalendar());
 
-    this.bulletSuccess$
+    this.createSuccess$
       .pipe(
         takeUntil(this.destroy$),
-        filter((value: string | undefined) => value === 'OK')
+        filter((value: boolean | undefined) => value === true)
       )
       .subscribe(() => this.router.navigate(['/']));
   }
@@ -57,25 +64,33 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   previousMonth() {
-    this.store.dispatch(CleanSelectionCalendar());
     this.store.dispatch(PreviousMonthCalendar());
   }
 
   nextMonth() {
-    this.store.dispatch(CleanSelectionCalendar());
     this.store.dispatch(NextMonthCalendar());
   }
 
-  selectDay($event: Date | undefined) {
-    this.store.dispatch(SelectDateCalendar({ value: $event }))
+  selectDay($event: string) {
+    this.timesAvailable$ = this.store.pipe(
+      select(GetTimesAvailabelPerDaySelector($event))
+    );
+
+    this.schedule = { date: $event, hour: '' };
   }
 
   selectBullet($event: string | undefined) {
-    this.store.dispatch(SelectHourCalendar({ value: $event }))
+    if (this.schedule) {
+      this.schedule.hour = $event!;
+    }
   }
 
-  sendBullet(bullet: { date: Date | undefined, hour: string | undefined }) {
-    this.store.dispatch(SendBullet({ entity: { date: bullet.date!, hour: bullet.hour! } }))
+  createSchedule() {
+    if (!this.schedule?.date || !this.schedule?.hour) {
+      return;
+    }
+
+    this.store.dispatch(CreateSchedule(this.schedule))
   }
 
 }

@@ -7,5 +7,12 @@ export interface ScheduleInterface {
 
 export interface ScheduleStateInterface {
   entities: ScheduleInterface[];
-  isLoading: string;
+  error: string | undefined;
+  success: boolean | undefined;
+  isLoading: boolean | undefined;
+}
+
+export interface CreateScheduleInterface {
+  date: string,
+  hour: string
 }

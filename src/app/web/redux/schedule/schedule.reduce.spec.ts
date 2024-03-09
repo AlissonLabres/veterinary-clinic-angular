@@ -1,10 +1,12 @@
-import { GetSchedules, GetSchedulesError, GetSchedulesSuccess } from "./schedule.action";
+import { CreateSchedule, CreateScheduleError, CreateScheduleSuccess, GetSchedules, GetSchedulesError, GetSchedulesSuccess } from "./schedule.action";
 import { ScheduleReducer } from "./schedule.reducer";
 import { ScheduleStateInterface } from "./schedule.state";
 
 const initialState: ScheduleStateInterface = {
   entities: [],
-  isLoading: 'false'
+  error: undefined,
+  success: undefined,
+  isLoading: false
 };
 
 describe('CalendarReducer', () => {
@@ -19,7 +21,7 @@ describe('CalendarReducer', () => {
     const action = GetSchedules();
     const result = ScheduleReducer(initialState, action);
 
-    expect(result.isLoading).toBe('true');
+    expect(result.isLoading).toBeTruthy();
   });
 
   it('should update state when GetSchedulesSuccess action is dispatched', () => {
@@ -33,14 +35,38 @@ describe('CalendarReducer', () => {
     const result = ScheduleReducer(initialState, action);
 
     expect(result.entities).toEqual([value]);
-    expect(result.isLoading).toBe('false');
+    expect(result.isLoading).toBeFalsy();
   });
 
   it('should update state when GetSchedulesError action is dispatched', () => {
     const action = GetSchedulesError();
     const result = ScheduleReducer(initialState, action);
 
-    expect(result.isLoading).toBe('false');
+    expect(result.isLoading).toBeFalsy();
   });
 
+  it('should set isLoading to true when CreateSchedule action is dispatched', () => {
+    const input = { date: '2022-01-01', hour: '15:00' };
+    const action = CreateSchedule(input);
+    const result = ScheduleReducer(initialState, action);
+
+    expect(result.isLoading).toBeTruthy();
+  });
+
+  it('should update state when CreateScheduleSuccess action is dispatched', () => {
+    const action = CreateScheduleSuccess();
+    const result = ScheduleReducer(initialState, action);
+
+    expect(result.success).toBeTruthy();
+    expect(result.isLoading).toBeFalsy();
+  });
+
+  it('should update state when CreateScheduleSuccess action is dispatched', () => {
+    const error = { message: 'Error' };
+    const action = CreateScheduleError(error);
+    const result = ScheduleReducer(initialState, action);
+
+    expect(result.error).toEqual('Error');
+    expect(result.isLoading).toBeFalsy();
+  });
 });

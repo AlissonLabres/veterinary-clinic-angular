@@ -1,26 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { ReplaySubject, of, pipe, take, tap, throwError } from 'rxjs';
-import { GetBullet, GetBulletSuccess, SendBullet, SendBulletError, SendBulletSuccess } from './bullet.action';
+import { ReplaySubject, of, take, throwError } from 'rxjs';
+
+import { GetBulletsAvailableUsecase } from '../../../domain/usecase/get-bullets-available/get-bullets-available.usecase';
+
+import { GetBulletsAvailable, GetBulletsAvailableError, GetBulletsAvailableSuccess } from './bullet.action';
 import { BulletEffect } from './bullet.effect';
 import { BulletInterface } from './bullet.state';
-import { GetBulletsAvailableUsecase } from '../../../domain/usecase/get-bullets-available/get-bullets-available.usecase';
-import { CreateScheduleUsecase } from '../../../domain/usecase/create-schedule/create-schedule.usecase';
-import { CreateScheduleOutput } from '../../../domain/usecase/create-schedule/create-schedule-output';
 
 describe('BulletEffect', () => {
   let actions$: ReplaySubject<any>;
   let effects: BulletEffect;
   let getBulletsAvailableUsecase: GetBulletsAvailableUsecase;
-  let createScheduleUsecase: CreateScheduleUsecase;
 
   beforeEach(() => {
     const getBulletsAvailableUsecaseMock = {
       execute: jest.fn().mockReturnValue(of()),
-    };
-
-    const createScheduleUsecaseMock = {
-      execute: jest.fn().mockReturnValue(of())
     };
 
     TestBed.configureTestingModule({
@@ -30,17 +25,12 @@ describe('BulletEffect', () => {
         {
           provide: GetBulletsAvailableUsecase,
           useValue: getBulletsAvailableUsecaseMock
-        },
-        {
-          provide: CreateScheduleUsecase,
-          useValue: createScheduleUsecaseMock
         }
       ]
     });
 
     effects = TestBed.inject(BulletEffect);
     getBulletsAvailableUsecase = TestBed.inject(GetBulletsAvailableUsecase);
-    createScheduleUsecase = TestBed.inject(CreateScheduleUsecase);
     actions$ = new ReplaySubject(1);
   });
 
@@ -48,44 +38,44 @@ describe('BulletEffect', () => {
     expect(effects).toBeTruthy();
   });
 
-  describe('loadingCalendar$', () => {
-    it('should return a GetBulletSuccess action, with the bullets, on success', () => {
+  describe('getBulletsAvailable$', () => {
+    it('should return a GetBulletsAvailableSuccess action, with the bullets, on success', () => {
       const bullets: BulletInterface[] = [{ id: '1', code: '2021-01-01T12:00' }];
-      const action = GetBullet();
-      const outcome = GetBulletSuccess({ entities: bullets });
+      const action = GetBulletsAvailable();
+      const outcome = GetBulletsAvailableSuccess({ entities: bullets });
 
       jest.spyOn(getBulletsAvailableUsecase, 'execute').mockReturnValue(of(bullets));
       actions$.next(action);
 
-      effects.loadingCalendar$
-        .pipe(take(1))
-        .subscribe(action => expect(action).toEqual(outcome));
-    });
-  });
-
-  describe('sendBullet$', () => {
-    it('should return a SendBulletSuccess action, on success', () => {
-      const action = SendBullet({ entity: { date: new Date('2022-02-01T12:00'), hour: '12:00' } });
-      const outputMock = { id: '0001', status: 'SCHEDULED' } as unknown as CreateScheduleOutput;
-      const outcome = SendBulletSuccess();
-
-      jest.spyOn(createScheduleUsecase, 'execute').mockReturnValue(of(outputMock));
-      actions$.next(action);
-
-      effects.sendBullet$
+      effects.getBulletsAvailable$
         .pipe(take(1))
         .subscribe(action => expect(action).toEqual(outcome));
     });
 
-    it('should return a SendBulletError action, on error', () => {
-      const action = SendBullet({ entity: { date: new Date('2022-02-01T12:00'), hour: '12:00' } });
-      const outcome = SendBulletError({ error: 'Error' });
+    it('should return a GetBulletsAvailableError action, on error', () => {
+      const action = GetBulletsAvailable();
+      const outcome = GetBulletsAvailableError({ message: 'Error' });
 
-      jest.spyOn(createScheduleUsecase, 'execute')
-        .mockReturnValue(throwError(() => ({ error: { message: 'Error' } })));
+      jest.spyOn(getBulletsAvailableUsecase, 'execute').mockReturnValue(
+        throwError(() => ({ error: { message: 'Error ' } }))
+      );
       actions$.next(action);
 
-      effects.sendBullet$
+      effects.getBulletsAvailable$
+        .pipe(take(1))
+        .subscribe(action => expect(action).toEqual(outcome));
+    });
+
+    it('should return a GetBulletsAvailableError action, on error with default error', () => {
+      const action = GetBulletsAvailable();
+      const outcome = GetBulletsAvailableError({ message: 'Erro ao criar agendamento' });
+
+      jest.spyOn(getBulletsAvailableUsecase, 'execute').mockReturnValue(
+        throwError(() => ({ defaultError: true }))
+      );
+      actions$.next(action);
+
+      effects.getBulletsAvailable$
         .pipe(take(1))
         .subscribe(action => expect(action).toEqual(outcome));
     });

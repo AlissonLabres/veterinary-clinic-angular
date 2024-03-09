@@ -1,39 +1,34 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
-
-import { BulletStateInterface } from "./bullet.state";
-import { BulletEntity } from "../../../domain/entity/bullet.entity";
+import { BulletInterface, BulletStateInterface } from "./bullet.state";
 
 const GetBulletState = createFeatureSelector<BulletStateInterface>('bulletState');
 
-export const GetBulletSelector = createSelector(
+export const GetDatesAvailableSelector = createSelector(
   GetBulletState,
   (state: BulletStateInterface) => {
-    return { date: state.date, hour: state.hour };
-  }
-);
-
-export const GetBulletsDateSelector = createSelector(
-  GetBulletState,
-  (state: BulletStateInterface) => {
-    const values: string[] = state.entities
-      .map((entity: BulletEntity) => entity.code.split('T')[0]);
-
-    return [...new Set(values)];
-  }
-);
-
-export const GetBulletsTimePerDaySelector = createSelector(
-  GetBulletState,
-  (state: BulletStateInterface) => {
-    if (state?.date) {
-      const values: any[] = state.entities
-        .filter((entity: BulletEntity) => new Date(entity.code).getDate() === state.date!.getDate())
-        .map((entity: BulletEntity) => entity.code.split('T')[1]);
-
-      return [...new Set(values)];
+    if (!state?.entities) {
+      return [];
     }
 
-    return;
+    return state.entities
+      .map((entity: BulletInterface) => entity.code.split('T')[0])
+      .filter((value, index, self) => self.indexOf(value) === index);
+  }
+);
+
+export const GetTimesAvailabelPerDaySelector = (date: string) => createSelector(
+  GetBulletState,
+  (state: BulletStateInterface) => {
+    console.log(date);
+    if (!date) return [];
+
+    const value = state.entities
+      .filter((entity: BulletInterface) => new Date(entity.code).getDate() === new Date(`${date}T03:00`).getDate())
+      .map((entity: BulletInterface) => entity.code.split('T')[1])
+      .filter((value, index, self) => self.indexOf(value) === index);
+
+    console.log(value);
+    return value;
   }
 );
 
@@ -47,7 +42,3 @@ export const GetErrorBullet = createSelector(
   (state: BulletStateInterface) => state.error
 );
 
-export const GetSuccessBullet = createSelector(
-  GetBulletState,
-  (state: BulletStateInterface) => state.created
-);

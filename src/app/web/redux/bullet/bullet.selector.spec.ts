@@ -1,5 +1,5 @@
-import { GetBulletSelector, GetBulletsDateSelector, GetBulletsTimePerDaySelector, GetErrorBullet, GetLoadingBullet, GetSuccessBullet } from './bullet.selector';
-import { BulletEntity } from '../../../domain/entity/bullet.entity';
+import { GetDatesAvailableSelector, GetErrorBullet, GetLoadingBullet, GetTimesAvailabelPerDaySelector } from './bullet.selector';
+import { BulletInterface } from './bullet.state';
 
 describe('Bullet Selectors', () => {
   let state: any;
@@ -7,35 +7,38 @@ describe('Bullet Selectors', () => {
   beforeEach(() => {
     state = {
       bulletState: {
-        date: new Date('2022-01-01T00:00:00-03:00'),
-        hour: '10:00',
         entities: [
           { code: '2022-01-01T10:00:00' },
           { code: '2022-01-01T11:00:00' },
           { code: '2022-01-02T10:00:00' },
-        ] as BulletEntity[],
+        ] as BulletInterface[],
       },
     };
   });
 
-  it('GetBulletSelector should return date and hour', () => {
-    const result = GetBulletSelector(state);
-    expect(result).toEqual({ date: state.bulletState.date, hour: state.bulletState.hour });
+  it('GetDatesAvailableSelector should return empty entities', () => {
+    state.bulletState.entities = undefined;
+    const result = GetDatesAvailableSelector(state);
+    expect(result).toEqual([]);
   });
 
-  it('GetBulletsDateSelector should return unique dates from bullet entities', () => {
-    const result = GetBulletsDateSelector(state);
+  it('GetDatesAvailableSelector should return unique dates from bullet entities', () => {
+    const result = GetDatesAvailableSelector(state);
     expect(result).toEqual(['2022-01-01', '2022-01-02']);
   });
 
-  it('GetBulletsTimePerDaySelector should return unique times for a specific day', () => {
-    const result = GetBulletsTimePerDaySelector(state);
+  it('GetTimesAvailabelPerDaySelector should return emtpy for date empty', () => {
+    const result = GetTimesAvailabelPerDaySelector('')(state);
+    expect(result).toEqual([]);
+  });
+
+  it('GetTimesAvailabelPerDaySelector should return unique times for a specific day', () => {
+    const result = GetTimesAvailabelPerDaySelector('2022-01-01')(state);
     expect(result).toEqual(['10:00:00', '11:00:00']);
   });
 
-  it('GetBulletsTimePerDaySelector should return empty times for a specific day', () => {
-    state.bulletState.date = new Date('2022-01-05T00:00:00-03:00');
-    const result = GetBulletsTimePerDaySelector(state);
+  it('GetTimesAvailabelPerDaySelector should return empty times for a specific day', () => {
+    const result = GetTimesAvailabelPerDaySelector('2022-01-05')(state);
     expect(result).toEqual([]);
   });
 
@@ -49,11 +52,5 @@ describe('Bullet Selectors', () => {
     state.bulletState.error = 'error';
     const result = GetErrorBullet(state);
     expect(result).toEqual('error');
-  });
-
-  it('GetErrorBullet should return error', () => {
-    state.bulletState.created = 'OK';
-    const result = GetSuccessBullet(state);
-    expect(result).toEqual('OK');
   });
 });

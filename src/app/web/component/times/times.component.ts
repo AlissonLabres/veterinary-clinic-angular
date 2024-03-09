@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./times.component.scss']
 })
 export class TimesComponent {
-  @Input() bulletsTimeAvailable!: string[];
+  @Input() bulletsTimeAvailable: string[] | null = [];
   @Output() bullet: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() { }

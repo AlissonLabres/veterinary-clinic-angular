@@ -8,8 +8,8 @@ import { CalendarInterface } from '../../redux/calendar/calendar.state';
 })
 export class DatesComponent implements OnInit {
   @Input() calendar!: CalendarInterface;
-  @Input() bulletsDateAvailable!: string[];
-  @Output() day: EventEmitter<Date> = new EventEmitter<Date>();
+  @Input() bulletsDateAvailable: string[] | null = [];
+  @Output() day: EventEmitter<string> = new EventEmitter<string>();
 
   weekDaysName: string[] = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
 
@@ -30,15 +30,16 @@ export class DatesComponent implements OnInit {
     const year = this.calendar.date.getFullYear();
     const month = this.calendar.date.getMonth()
     const date = new Date(year, month, day);
+    const bulletAvailable = this.hasBulletAvailableWith(date);
 
-    if (this.hasBulletAvailableWith(date)) {
-      this.day.emit(date);
+    if (bulletAvailable) {
+      this.day.emit(bulletAvailable);
     }
   }
 
   private hasBulletAvailableWith(date: Date) {
-    return this.bulletsDateAvailable
-      .findIndex((dateString: string) => this.compare(date, dateString)) > -1
+    if (this.bulletsDateAvailable === null) return false;
+    return this.bulletsDateAvailable.find((dateString: string) => this.compare(date, dateString))
   }
 
   private compare(from: Date, to: string) {

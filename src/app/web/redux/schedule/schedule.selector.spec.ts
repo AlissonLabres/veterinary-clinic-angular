@@ -1,4 +1,5 @@
-import { GetLoadingSchedule, GetScheduleSelector } from "./schedule.selector";
+import { CreateErrorSchedule, CreateSuccessSchedule, GetLoadingSchedule, GetScheduleSelector } from "./schedule.selector";
+import { ScheduleStateInterface } from "./schedule.state";
 
 describe('ScheduleSelector', () => {
   let state: any;
@@ -12,8 +13,10 @@ describe('ScheduleSelector', () => {
           bullet_code: '2022-01-01T00:00:00.000Z',
           type_service: 'appointment',
         }],
-        isLoading: 'false'
-      }
+        error: undefined,
+        success: undefined,
+        isLoading: false
+      } as ScheduleStateInterface
     };
   });
 
@@ -24,6 +27,18 @@ describe('ScheduleSelector', () => {
 
   it('GetLoadingSchedule should return loading false', () => {
     const result = GetLoadingSchedule(state);
-    expect(result).toEqual('false');
+    expect(result).toBeFalsy();
+  });
+
+  it('CreateSuccessSchedule should return success true', () => {
+    state.scheduleState.success = true;
+    const result = CreateSuccessSchedule(state);
+    expect(result).toBeTruthy();
+  });
+
+  it('CreateErrorSchedule should return success true', () => {
+    state.scheduleState.error = 'Error'
+    const result = CreateErrorSchedule(state);
+    expect(result).toEqual('Error');
   });
 });

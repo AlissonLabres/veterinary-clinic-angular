@@ -1,17 +1,19 @@
-import { Inject, Injectable, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap } from 'rxjs';
+import { catchError, map, of, repeat, switchMap } from 'rxjs';
 
-import { GetSchedules, GetSchedulesSuccess } from './schedule.action';
-import { ScheduleEntity } from '../../../domain/entity/schedule.entity';
-import { ScheduleInterface } from './schedule.state';
 import { GetSchedulesByUserUsecase } from '../../../domain/usecase/get-schedules-by-user/get-schedules-by-user.usecase';
 import { ScheduleOutput } from '../../../domain/usecase/get-schedules-by-user/schedule-output';
+import { CreateScheduleUsecase } from '../../../domain/usecase/create-schedule/create-schedule.usecase';
+
+import { CreateSchedule, CreateScheduleError, CreateScheduleSuccess, GetSchedules, GetSchedulesSuccess } from './schedule.action';
+import { ScheduleInterface } from './schedule.state';
 
 @Injectable({ providedIn: 'root' })
 export class ScheduleEffect {
 
-  protected getAllSchedulesByUserUsecase = inject(GetSchedulesByUserUsecase);
+  protected getAllSchedulesByUserUsecase: GetSchedulesByUserUsecase = inject(GetSchedulesByUserUsecase);
+  protected createScheduleUsecase: CreateScheduleUsecase = inject(CreateScheduleUsecase);
   private actions$: Actions = inject(Actions);
 
   loadingCalendar$ = createEffect(() =>
@@ -22,4 +24,18 @@ export class ScheduleEffect {
       map((entities) => GetSchedulesSuccess({ entities }))
     )
   );
+
+  createSchedule$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CreateSchedule),
+      switchMap((input) => this.createScheduleUsecase.execute(this.generateCode(input.date, input.hour))),
+      map(() => CreateScheduleSuccess()),
+      catchError((error) => of(CreateScheduleError({ message: error?.error?.message ?? 'Erro ao criar agendamento' }))),
+      repeat()
+    )
+  );
+
+  private generateCode(date: string, hourEntity: string) {
+    return `${date}T${hourEntity}`;
+  }
 }

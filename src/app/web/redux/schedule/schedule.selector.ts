@@ -13,3 +13,13 @@ export const GetLoadingSchedule = createSelector(
   GetScheduleState,
   (state: ScheduleStateInterface) => state.isLoading
 );
+
+export const CreateSuccessSchedule = createSelector(
+  GetScheduleState,
+  (state: ScheduleStateInterface) => state.success
+);
+
+export const CreateErrorSchedule = createSelector(
+  GetScheduleState,
+  (state: ScheduleStateInterface) => state.error
+);
