@@ -1,4 +1,4 @@
-import { CreateErrorSchedule, CreateSuccessSchedule, GetLoadingSchedule, GetScheduleSelector } from "./schedule.selector";
+import { CancelErrorSchedule, CancelSuccessSchedule, CreateErrorSchedule, CreateSuccessSchedule, GetLoadingSchedule, GetScheduleSelector } from "./schedule.selector";
 import { ScheduleStateInterface } from "./schedule.state";
 
 describe('ScheduleSelector', () => {
@@ -36,9 +36,21 @@ describe('ScheduleSelector', () => {
     expect(result).toBeTruthy();
   });
 
-  it('CreateErrorSchedule should return success true', () => {
+  it('CreateErrorSchedule should return error message', () => {
     state.scheduleState.error = 'Error'
     const result = CreateErrorSchedule(state);
+    expect(result).toEqual('Error');
+  });
+
+  it('CancelSuccessSchedule should return success true', () => {
+    state.scheduleState.success = true;
+    const result = CancelSuccessSchedule(state);
+    expect(result).toBeTruthy();
+  });
+
+  it('CancelErrorSchedule should return error message', () => {
+    state.scheduleState.error = 'Error'
+    const result = CancelErrorSchedule(state);
     expect(result).toEqual('Error');
   });
 });

@@ -4,35 +4,33 @@ import { of, take } from "rxjs";
 import { ScheduleRepositoryToken } from "../../../config/injection-token.repositories";
 import { ScheduleRepositoryInterface } from "../../repository/schedule-repository.interface";
 
-import { CreateScheduleUsecase } from "./create-schedule.usecase";
+import { CancelScheduleUsecase } from "./cancel-schedule.usecase";
 
-describe('CreateScheduleUsecase', () => {
-  let usecase: CreateScheduleUsecase;
+describe('CancelScheduleUsecase', () => {
+  let usecase: CancelScheduleUsecase;
   let scheduleRepository: ScheduleRepositoryInterface;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        CreateScheduleUsecase,
+        CancelScheduleUsecase,
         {
           provide: ScheduleRepositoryToken,
-          useValue: { createSchedule: jest.fn() }
+          useValue: { cancelSchedule: jest.fn() }
         }
       ]
     });
 
-    usecase = TestBed.inject(CreateScheduleUsecase);
+    usecase = TestBed.inject(CancelScheduleUsecase);
     scheduleRepository = TestBed.inject(ScheduleRepositoryToken);
   });
 
-  it('should return a value when execute createSchedule on success', () => {
+  it('should return a value when execute cancelSchedule on success', () => {
     const outcome = { id: '001', status: 'SCHEDULED' };
 
-    (scheduleRepository.createSchedule as jest.Mock).mockReturnValue(
-      of({ schedule_id: '001', schedule_status: 'SCHEDULED' })
-    );
+    (scheduleRepository.cancelSchedule as jest.Mock).mockReturnValue(of());
 
-    usecase.execute('001')
+    usecase.execute(1)
       .pipe(take(1))
       .subscribe(response => expect(response).toEqual(outcome));
   });

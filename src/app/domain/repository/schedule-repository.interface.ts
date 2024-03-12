@@ -7,4 +7,6 @@ export interface ScheduleRepositoryInterface {
 
   getScheduleByUser(id: string): Observable<ScheduleEntity[]>;
 
+  cancelSchedule(id: number): Observable<void>;
+
 }

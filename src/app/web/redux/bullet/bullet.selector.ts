@@ -19,7 +19,6 @@ export const GetDatesAvailableSelector = createSelector(
 export const GetTimesAvailabelPerDaySelector = (date: string) => createSelector(
   GetBulletState,
   (state: BulletStateInterface) => {
-    console.log(date);
     if (!date) return [];
 
     const value = state.entities
@@ -27,7 +26,6 @@ export const GetTimesAvailabelPerDaySelector = (date: string) => createSelector(
       .map((entity: BulletInterface) => entity.code.split('T')[1])
       .filter((value, index, self) => self.indexOf(value) === index);
 
-    console.log(value);
     return value;
   }
 );

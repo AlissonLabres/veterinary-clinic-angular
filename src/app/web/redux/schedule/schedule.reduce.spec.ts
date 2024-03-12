@@ -1,4 +1,4 @@
-import { CreateSchedule, CreateScheduleError, CreateScheduleSuccess, GetSchedules, GetSchedulesError, GetSchedulesSuccess } from "./schedule.action";
+import { CancelSchedule, CancelScheduleError, CancelScheduleSuccess, CreateSchedule, CreateScheduleError, CreateScheduleSuccess, GetSchedules, GetSchedulesError, GetSchedulesSuccess } from "./schedule.action";
 import { ScheduleReducer } from "./schedule.reducer";
 import { ScheduleStateInterface } from "./schedule.state";
 
@@ -64,6 +64,31 @@ describe('CalendarReducer', () => {
   it('should update state when CreateScheduleSuccess action is dispatched', () => {
     const error = { message: 'Error' };
     const action = CreateScheduleError(error);
+    const result = ScheduleReducer(initialState, action);
+
+    expect(result.error).toEqual('Error');
+    expect(result.isLoading).toBeFalsy();
+  });
+
+  it('should set isLoading to true when CancelSchedule action is dispatched', () => {
+    const input = { schedule_id: 1 };
+    const action = CancelSchedule(input);
+    const result = ScheduleReducer(initialState, action);
+
+    expect(result.isLoading).toBeTruthy();
+  });
+
+  it('should update state when CancelScheduleSuccess action is dispatched', () => {
+    const action = CancelScheduleSuccess();
+    const result = ScheduleReducer(initialState, action);
+
+    expect(result.success).toBeTruthy();
+    expect(result.isLoading).toBeFalsy();
+  });
+
+  it('should update state when CancelScheduleError action is dispatched', () => {
+    const error = { message: 'Error' };
+    const action = CancelScheduleError(error);
     const result = ScheduleReducer(initialState, action);
 
     expect(result.error).toEqual('Error');

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ScheduleRepositoryInterface } from '../../domain/repository/schedule-repository.interface';
-import { Observable } from 'rxjs';
+import { Observable, debounce, debounceTime } from 'rxjs';
 import { ScheduleEntity } from '../../domain/entity/schedule.entity';
 import { environment } from '../../../environments/environments';
 
@@ -9,6 +9,12 @@ import { environment } from '../../../environments/environments';
 export class ScheduleRepositoryService implements ScheduleRepositoryInterface {
 
   constructor(private readonly httpClient: HttpClient) { }
+
+  cancelSchedule(id: number): Observable<void> {
+    const input = { schedule_id: id };
+
+    return this.httpClient.post<void>(`${environment.api}/schedule/cancel`, input);
+  }
 
   createSchedule(bullet_code: string): Observable<ScheduleEntity> {
     const input = {

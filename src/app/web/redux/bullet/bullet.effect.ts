@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, repeat, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
 
 import { GetBulletsAvailable, GetBulletsAvailableSuccess, GetBulletsAvailableError } from './bullet.action';
 import { BulletInterface } from './bullet.state';
@@ -20,8 +20,7 @@ export class BulletEffect {
       switchMap(() => this.getBulletsAvailable.execute()),
       map((bullets: BulletOutput[]) => bullets.map(bullet => ({ ...bullet } as BulletInterface))),
       map((entities) => GetBulletsAvailableSuccess({ entities })),
-      catchError((error) => of(GetBulletsAvailableError({ message: error?.error?.message ?? 'Erro ao obter slots' }))),
-      repeat()
+      catchError((error) => of(GetBulletsAvailableError({ message: error?.error?.message ?? 'Erro ao obter slots' })))
     )
   );
 }

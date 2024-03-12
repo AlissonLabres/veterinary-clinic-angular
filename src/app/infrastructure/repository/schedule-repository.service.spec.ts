@@ -30,7 +30,7 @@ describe('ScheduleRepository', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should return a value when dispatch sendSchedule on success', () => {
+  it('should return a value when dispatch createSchedule on success', () => {
     const bullet = new BulletEntity('0001', '2023-09-08T16:00');
 
     (httpClient.post as jest.Mock).mockReturnValue(of(bullet));
@@ -46,6 +46,16 @@ describe('ScheduleRepository', () => {
     (httpClient.get as jest.Mock).mockReturnValue(of(outcome));
 
     service.getScheduleByUser('1')
+      .pipe(take(1))
+      .subscribe(response => expect(response).toEqual(outcome));
+  });
+
+  it('should return a value when dispatch cancelSchedule on success', () => {
+    const outcome: ScheduleEntity = new ScheduleEntity(1, 'CANCELED', '2023-09-08T16:00', 'appointment');
+
+    (httpClient.post as jest.Mock).mockReturnValue(of());
+
+    service.cancelSchedule(1)
       .pipe(take(1))
       .subscribe(response => expect(response).toEqual(outcome));
   });

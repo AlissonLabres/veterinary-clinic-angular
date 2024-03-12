@@ -12,7 +12,7 @@ const initialState: BulletStateInterface = {
 
 export const BulletReducer = createReducer(
   initialState,
-  on(GetBulletsAvailable, (state) => ({ ...state, isLoading: true })),
+  on(GetBulletsAvailable, (state) => ({ ...state, success: undefined, error: undefined, isLoading: true })),
   on(GetBulletsAvailableError, (state, { message }) => ({ ...state, error: message, isLoading: false })),
   on(GetBulletsAvailableSuccess, (state, { entities }) => ({
     ...state,

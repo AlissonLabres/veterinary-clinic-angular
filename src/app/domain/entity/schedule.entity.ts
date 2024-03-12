@@ -9,7 +9,7 @@ export class ScheduleEntity {
   ) { }
 
   static restore(schedule: any): ScheduleEntity {
-    if (!schedule) {
+    if (!schedule?.schedule_id) {
       throw new ScheduleException();
     }
 
