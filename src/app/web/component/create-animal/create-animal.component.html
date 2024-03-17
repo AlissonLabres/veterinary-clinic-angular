@@ -1,0 +1,106 @@
+<section class="card bg-light p-4 border border-0 rounded-4">
+  <h2
+    class="font-montserrat text-uppercase fw-bolder text-center"
+    data-testId="text-create-animal"
+  >
+    Criar Animal
+  </h2>
+  <form
+    data-testId="form-create-animal"
+    [formGroup]="animal"
+    class="d-flex flex-column"
+    (ngSubmit)="sendForm()"
+  >
+    <ng-container *ngIf="error$ | async as error">
+      <div data-testId="alert-error" class="mt-3 alert alert-danger" role="alert">
+        {{ error }}
+      </div>
+    </ng-container>
+    <div class="name">
+      <label class="font-montserrat" for="name">Nome</label>
+      <input
+        id="name"
+        type="text"
+        name="name"
+        placeholder="ex -   John Due"
+        data-testId="input-name"
+        [ngClass]="isInvalid('name')"
+        formControlName="name"
+      />
+      <div data-testId="text-error-name" class="invalid-feedback">{{ animal.get('name')?.errors | present:exceptions }}
+      </div>
+    </div>
+    <div class="age">
+      <label class="font-montserrat" for="age">Idade</label>
+      <input
+        id="age"
+        type="number"
+        name="age"
+        placeholder="ex -   1 ano"
+        data-testId="input-age"
+        [ngClass]="isInvalid('age')"
+        formControlName="age"
+      />
+      <div data-testId="text-error-age" class="invalid-feedback">{{ animal.get('age')?.errors | present:exceptions }}
+      </div>
+    </div>
+    <div class="weight">
+      <label class="font-montserrat" for="weight">Peso</label>
+      <input
+        id="weight"
+        type="numeric"
+        name="weight"
+        placeholder="ex -  1kg"
+        data-testId="input-weight"
+        [ngClass]="isInvalid('weight')"
+        formControlName="weight"
+      />
+      <div data-testId="text-error-weight" class="invalid-feedback">{{ animal.get('weight')?.errors | present:exceptions }}
+      </div>
+    </div>
+    <div class="type">
+      <label class="font-montserrat" for="type">Tipo</label>
+      <input
+        id="type"
+        type="text"
+        name="type"
+        placeholder="ex -  Gato"
+        data-testId="input-type"
+        [ngClass]="isInvalid('type')"
+        formControlName="type"
+      />
+      <div data-testId="text-error-type" class="invalid-feedback">{{ animal.get('type')?.errors | present:exceptions }}
+      </div>
+    </div>
+    <div class="breed">
+      <label class="font-montserrat" for="breed">Especie</label>
+      <input
+        id="breed"
+        type="text"
+        name="breed"
+        placeholder="ex -  Gato"
+        data-testId="input-breed"
+        [ngClass]="isInvalid('breed')"
+        formControlName="breed"
+      />
+      <div data-testId="text-error-breed" class="invalid-feedback">{{ animal.get('breed')?.errors | present:exceptions }}
+      </div>
+    </div>
+    <ng-container *ngIf="(loading$ | async) as loading; else buttonSubmit">
+      <button type="submit" data-testId="button-submit-animal-loading"
+        class="btn btn-indigo btn-block mt-4 fw-bolder font-montserrat text-uppercase justify-content-end"
+        [disabled]="animal.invalid">
+        <div class="spinner-grow text-dark" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </button>
+    </ng-container>
+    <ng-template #buttonSubmit>
+      <button type="submit" data-testId="button-submit-animal"
+        class="btn btn-indigo btn-block mt-4 fw-bolder font-montserrat text-uppercase justify-content-end"
+        [disabled]="animal.invalid">
+        Criar animal
+      </button>
+    </ng-template>
+  </form>
+</section>

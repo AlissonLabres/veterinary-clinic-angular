@@ -1,6 +1,6 @@
 import { provideMockStore } from '@ngrx/store/testing';
 import { ListUserComponent } from './list-user.component';
-import { GetLoadingUser, GetUserSelector } from '../../redux/user/user.selector';
+import { GetLoadingUser, GetUsersSelector } from '../../redux/user/user.selector';
 import { PhonePipe } from '../../pipe/phone.pipe';
 import { render } from '@testing-library/angular';
 
@@ -44,7 +44,7 @@ const renderListUser = async (loading: string, users: any) => {
   };
 
   const selectorErrorUserMock = {
-    selector: GetUserSelector,
+    selector: GetUsersSelector,
     value: users,
   };
 

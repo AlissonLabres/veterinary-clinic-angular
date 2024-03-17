@@ -1,4 +1,4 @@
-import { GetErrorUser, GetLoadingUser, GetUserSelector, UserCreated } from "./user.selector";
+import { GetErrorUser, GetLoadingUser, GetUsersSelector, UserCreated } from "./user.selector";
 
 describe('UserSelector', () => {
   let state: any;
@@ -27,7 +27,7 @@ describe('UserSelector', () => {
   });
 
   it('GetUserSelector should return list entities', () => {
-    const result = GetUserSelector(state);
+    const result = GetUsersSelector(state);
     expect(result).toEqual(state.userState.entities);
   });
 

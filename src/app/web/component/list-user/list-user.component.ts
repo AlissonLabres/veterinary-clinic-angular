@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { GetUser } from '../../redux/user/user.action';
-import { GetLoadingUser, GetUserSelector } from '../../redux/user/user.selector';
+import { GetLoadingUser, GetUsersSelector } from '../../redux/user/user.selector';
 
 @Component({
   selector: 'app-list-user',
@@ -12,7 +12,7 @@ export class ListUserComponent implements OnInit {
 
   store = inject(Store);
   loading$ = this.store.select(GetLoadingUser);
-  users$ = this.store.select(GetUserSelector);
+  users$ = this.store.select(GetUsersSelector);
 
   ngOnInit() {
     this.store.dispatch(GetUser())

@@ -1,38 +1,34 @@
-import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { EffectsModule } from '@ngrx/effects';
-
-import { BulletReducer } from './web/redux/bullet/bullet.reducer';
-import { BulletEffect } from './web/redux/bullet/bullet.effect';
-
-import { CalendarReducer } from './web/redux/calendar/calendar.reducer';
-import { CalendarEffect } from './web/redux/calendar/calendar.effect';
-
-import { ScheduleReducer } from './web/redux/schedule/schedule.reducer';
-import { ScheduleEffect } from './web/redux/schedule/schedule.effect';
-import { SchedulesComponent } from './web/component/schedules/schedules.component';
-
-import { HoverDayDirective } from './web/directive/hover-day.directive';
-
 import { CalendarComponent } from './web/component/calendar/calendar.component';
-import { DatesComponent } from './web/component/dates/dates.component';
-import { TimesComponent } from './web/component/times/times.component';
+import { CreateAnimalComponent } from './web/component/create-animal/create-animal.component';
 import { CreateUserComponent } from './web/component/create-user/create-user.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { PhoneDirective } from './web/directive/phone.directive';
-import { PresentErrorPipe } from './web/pipe/present-error.pipe';
-import { UserReducer } from './web/redux/user/user.reducer';
-import { UserEffect } from './web/redux/user/user.effect';
+import { DatesComponent } from './web/component/dates/dates.component';
 import { ListUserComponent } from './web/component/list-user/list-user.component';
+import { SchedulesComponent } from './web/component/schedules/schedules.component';
+import { TimesComponent } from './web/component/times/times.component';
+import { HoverDayDirective } from './web/directive/hover-day.directive';
+import { PhoneDirective } from './web/directive/phone.directive';
 import { PhonePipe } from './web/pipe/phone.pipe';
-
+import { PresentErrorPipe } from './web/pipe/present-error.pipe';
+import { AnimalEffect } from './web/redux/animal/animal.effect';
+import { AnimalReducer } from './web/redux/animal/animal.reduce';
+import { BulletEffect } from './web/redux/bullet/bullet.effect';
+import { BulletReducer } from './web/redux/bullet/bullet.reducer';
+import { CalendarEffect } from './web/redux/calendar/calendar.effect';
+import { CalendarReducer } from './web/redux/calendar/calendar.reducer';
+import { ScheduleEffect } from './web/redux/schedule/schedule.effect';
+import { ScheduleReducer } from './web/redux/schedule/schedule.reducer';
+import { UserEffect } from './web/redux/user/user.effect';
+import { UserReducer } from './web/redux/user/user.reducer';
 
 @NgModule({
   declarations: [
@@ -42,6 +38,7 @@ import { PhonePipe } from './web/pipe/phone.pipe';
     TimesComponent,
     SchedulesComponent,
     CreateUserComponent,
+    CreateAnimalComponent,
     ListUserComponent,
     HoverDayDirective,
     PhoneDirective,
@@ -56,14 +53,16 @@ import { PhonePipe } from './web/pipe/phone.pipe';
       scheduleState: ScheduleReducer,
       bulletState: BulletReducer,
       calendarState: CalendarReducer,
-      userState: UserReducer
+      userState: UserReducer,
+      animalState: AnimalReducer
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25 }),
     EffectsModule.forRoot([
       ScheduleEffect,
       BulletEffect,
       CalendarEffect,
-      UserEffect
+      UserEffect,
+      AnimalEffect
     ]),
     AppRoutingModule,
   ],

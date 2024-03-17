@@ -1,0 +1,24 @@
+input {
+  border: none;
+  border-radius: 1rem;
+  border-bottom: 1px solid #ccc;
+  outline: none;
+  width: 100%;
+  padding: 0.5rem 0.8rem 0.6rem 0.8rem;
+  font-size: 16px;
+  color: #555;
+
+  &::placeholder {
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  &.is-invalid {
+    border-bottom: 1px solid red;
+  }
+}
+
+label {
+  margin: 1rem 0 0.5rem 0;
+  padding-left: .5rem;
+}
