@@ -12,3 +12,5 @@ export const GetUserSuccess = createAction('[User] Load users success', propsUse
 export const CreateUser = createAction('[User] Create user', propUserEntity);
 export const CreateUserError = createAction('[User] Create user error', propUserError);
 export const CreateUserSuccess = createAction('[User] Create user success', propUserEntity);
+
+export const RestoreUser = createAction('[User] Restore user');

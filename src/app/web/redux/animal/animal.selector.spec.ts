@@ -1,4 +1,9 @@
-import { GetErrorAnimal, GetLoadingAnimal, GetSuccessAnimal } from "./animal.selector";
+import {
+  GetAllAnimalsByUserSelector,
+  GetErrorAnimal,
+  GetLoadingAnimal,
+  GetSuccessAnimal,
+} from './animal.selector';
 
 describe('AnimalSelector', () => {
   let state: any;
@@ -9,8 +14,8 @@ describe('AnimalSelector', () => {
         isLoading: false,
         entities: [],
         success: undefined,
-        error: undefined
-      }
+        error: undefined,
+      },
     };
   });
 
@@ -48,5 +53,10 @@ describe('AnimalSelector', () => {
     state.animalState.success = true;
     const result = GetSuccessAnimal(state);
     expect(result).toBeTruthy();
+  });
+
+  it('should return all animais is empty', () => {
+    const result = GetAllAnimalsByUserSelector(state);
+    expect(result).toEqual([]);
   });
 });

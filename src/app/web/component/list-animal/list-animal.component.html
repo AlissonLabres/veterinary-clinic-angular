@@ -1,8 +1,5 @@
-<section
-  *ngIf="loading$ | async as loading"
-  class="card bg-light p-4 border border-0 rounded-4"
->
-  <div class="row" *ngIf="loading === 'true'; else users_list">
+<section class="card bg-light p-4 border border-0 rounded-4">
+  <div class="row" *ngIf="loading$ | async; else animals_list">
     <div class="col-12 d-flex justify-content-center">
       <div class="spinner-grow text-dark" role="status">
         <span data-testId="loading-spinner-text" class="visually-hidden"
@@ -12,10 +9,10 @@
     </div>
   </div>
 
-  <ng-template #users_list>
-    <div class="row" *ngIf="users$ | async as users">
+  <ng-template #animals_list>
+    <div class="row" *ngIf="animals$ | async as animals">
       <div class="col-12">
-        <div class="table-responsive" *ngIf="users.length > 0; else empty">
+        <div class="table-responsive" *ngIf="animals.length > 0; else empty">
           <table class="table table-hover font-montserrat">
             <thead>
               <tr>
@@ -27,30 +24,30 @@
             </thead>
             <tbody class="table-group-divider">
               <tr
-                data-testId="list-users"
-                *ngFor="let user of users; index as index"
+                data-testId="list-animals"
+                *ngFor="let animal of animals; index as index"
               >
                 <td
                   class="align-content-center"
-                  [attr.data-testId]="'list-users-name-' + index"
+                  [attr.data-testId]="'list-animals-name-' + index"
                 >
-                  {{ user?.user_name }}
+                  {{ animal?.name }}
                 </td>
                 <td
                   class="align-content-center"
-                  [attr.data-testId]="'list-users-email-' + index"
+                  [attr.data-testId]="'list-animals-type-' + index"
                 >
-                  {{ user?.user_email }}
+                  {{ animal?.type }}
                 </td>
                 <td
                   class="align-content-center"
-                  [attr.data-testId]="'list-users-phone-' + index"
+                  [attr.data-testId]="'list-animals-age-' + index"
                 >
-                  {{ user?.user_phone | phone }}
+                  {{ animal?.age }}
                 </td>
                 <td
                   class="align-content-center"
-                  [attr.data-testId]="'list-users-action-' + index"
+                  [attr.data-testId]="'list-animals-action-' + index"
                 >
                   <button
                     [attr.data-testId]="'action-button-' + index"
@@ -64,12 +61,12 @@
                     ></span>
                   </button>
                   <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
                     <li>
-                      <span
-                        class="dropdown-item"
-                        [routerLink]="user.user_id + '/animals'"
-                        [attr.data-testId]="'action-button-drop-' + index"
-                      >Listar animais</span>
+                      <a class="dropdown-item" href="#">Another action</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="#">Something else here</a>
                     </li>
                   </ul>
                 </td>
@@ -80,7 +77,7 @@
         <ng-template #empty>
           <div class="d-flex justify-content-center">
             <p data-testId="empty-list" class="text-muted font-montserrat mt-3">
-              Nenhum usuário encontrado
+              Nenhum animal encontrado
             </p>
           </div>
         </ng-template>
@@ -88,7 +85,7 @@
 
       <button
         type="button"
-        class="btn btn-indigo col-md-2"
+        class="btn btn-indigo col-md-2 offset-md-10"
         data-testId="button-navigate-user-create"
         routerLink="create"
       >

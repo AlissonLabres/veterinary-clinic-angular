@@ -91,7 +91,6 @@ export class CreateAnimalComponent implements OnInit, OnDestroy {
       user_id: this.userSelector,
     };
 
-    console.log(payload);
     this.store.dispatch(CreateAnimal({ payload }));
   }
 

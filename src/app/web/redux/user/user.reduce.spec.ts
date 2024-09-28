@@ -1,12 +1,20 @@
-import { CreateUser, CreateUserError, CreateUserSuccess, GetUser, GetUserError, GetUserSuccess } from "./user.action";
-import { UserReducer } from "./user.reducer";
-import { UserStateInterface } from "./user.state";
+import {
+  CreateUser,
+  CreateUserError,
+  CreateUserSuccess,
+  GetUser,
+  GetUserError,
+  GetUserSuccess,
+  RestoreUser,
+} from './user.action';
+import { UserReducer } from './user.reducer';
+import { UserStateInterface } from './user.state';
 
 const initialState: UserStateInterface = {
   error: null,
   entity: null,
   entities: [],
-  isLoading: 'false'
+  isLoading: 'false',
 };
 
 describe('CalendarReducer', () => {
@@ -29,7 +37,7 @@ describe('CalendarReducer', () => {
       user_name: 'Testing Mock',
       user_email: 'testing@mock.com.br',
       user_phone: '4188889999',
-      user_animals: []
+      user_animals: [],
     };
     const action = GetUserSuccess({ entities: [value] });
     const result = UserReducer(initialState, action);
@@ -47,7 +55,11 @@ describe('CalendarReducer', () => {
   });
 
   it('should update state when CreateUser action is dispatched', () => {
-    const value = { user_name: 'Testing Mock', user_email: 'testing@mock.com.br', user_phone: '4188889999' };
+    const value = {
+      user_name: 'Testing Mock',
+      user_email: 'testing@mock.com.br',
+      user_phone: '4188889999',
+    };
     const action = CreateUser({ entity: value });
     const result = UserReducer(initialState, action);
 
@@ -56,7 +68,12 @@ describe('CalendarReducer', () => {
   });
 
   it('should update state when CreateUserSuccess action is dispatched', () => {
-    const value = { user_name: 'Testing Mock', user_email: 'testing@mock.com.br', user_phone: '4188889999', user_animals: [] };
+    const value = {
+      user_name: 'Testing Mock',
+      user_email: 'testing@mock.com.br',
+      user_phone: '4188889999',
+      user_animals: [],
+    };
     const action = CreateUserSuccess({ entity: value });
     const result = UserReducer(initialState, action);
 
@@ -69,6 +86,16 @@ describe('CalendarReducer', () => {
     const result = UserReducer(initialState, action);
 
     expect(result.error).toBe('Error');
+    expect(result.isLoading).toBe('false');
+  });
+
+  it('should restore state when RestoreUser action is dispatched', () => {
+    const action = RestoreUser();
+    const result = UserReducer(initialState, action);
+
+    expect(result.error).toBeNull();
+    expect(result.entity).toBeNull();
+    expect(result.entities).toEqual([]);
     expect(result.isLoading).toBe('false');
   });
 });

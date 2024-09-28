@@ -91,7 +91,7 @@ describe(CalendarComponent.name, () => {
     const store = TestBed.inject(MockStore);
     store.dispatch = jest.fn();
 
-    const createSchedule = screen.getByTestId('create-schedule-button');
+    const createSchedule = screen.getByTestId('button-create-schedule');
     await user.click(createSchedule);
 
     expect(store.dispatch).toHaveBeenCalledWith({

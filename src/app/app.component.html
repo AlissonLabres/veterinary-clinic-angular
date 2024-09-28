@@ -4,16 +4,21 @@
       class="col my-auto"
       data-testid="title-page"
       routerLink="schedule"
-      accesskey="h"
     >
       <a role="link" class="text-decoration-none">{{ title }}</a>
     </h1>
     <nav class="col-auto d-flex flex-column align-items-between gap-2">
       <button
         type="button"
+        data-testid="button-navigate-clients"
+        class="col btn btn-outline-indigo"
+        routerLink="users"
+      >Clientes</button>
+      <button
+        type="button"
+        data-testid="button-navigate-schedule"
         class="col btn btn-outline-indigo"
         routerLink="calendar"
-        accesskey="c"
       >Agendar consulta</button>
     </nav>
   </header>

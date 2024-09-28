@@ -1,7 +1,8 @@
-import { createFeatureSelector, createSelector } from "@ngrx/store";
-import { AnimalStateInterface } from "./animal.state";
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { AnimalStateInterface } from './animal.state';
 
-const GetAnimalState = createFeatureSelector<AnimalStateInterface>('animalState');
+const GetAnimalState =
+  createFeatureSelector<AnimalStateInterface>('animalState');
 
 export const GetSuccessAnimal = createSelector(
   GetAnimalState,
@@ -16,4 +17,9 @@ export const GetErrorAnimal = createSelector(
 export const GetLoadingAnimal = createSelector(
   GetAnimalState,
   (state: AnimalStateInterface) => state.isLoading
+);
+
+export const GetAllAnimalsByUserSelector = createSelector(
+  GetAnimalState,
+  (state: AnimalStateInterface) => state.entities
 );

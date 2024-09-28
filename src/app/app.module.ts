@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CalendarComponent } from './web/component/calendar/calendar.component';
 import { CreateAnimalComponent } from './web/component/create-animal/create-animal.component';
+import { ListAnimalComponent } from './web/component/list-animal/list-animal.component';
 import { CreateUserComponent } from './web/component/create-user/create-user.component';
 import { DatesComponent } from './web/component/dates/dates.component';
 import { ListUserComponent } from './web/component/list-user/list-user.component';
@@ -40,6 +41,7 @@ import { UserReducer } from './web/redux/user/user.reducer';
     CreateUserComponent,
     CreateAnimalComponent,
     ListUserComponent,
+    ListAnimalComponent,
     HoverDayDirective,
     PhoneDirective,
     PhonePipe,

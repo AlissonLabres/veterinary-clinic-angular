@@ -9,20 +9,38 @@
 
   :nth-child(7n),
   :nth-child(7n-6) {
-    color: rgba(var(--bs-danger-rgb), .7);
+    color: var(--bs-danger);
   }
 
-  :nth-child(1) {
+  :nth-child(7n-6) {
     border-bottom-left-radius: var(--bs-border-radius-xxl) !important;
     border-top-left-radius: var(--bs-border-radius-xxl) !important;
   }
 
-  :nth-child(7) {
+  :nth-child(7n) {
     border-bottom-right-radius: var(--bs-border-radius-xxl) !important;
     border-top-right-radius: var(--bs-border-radius-xxl) !important;
   }
 
   .name-month {
-    background-color: rgba(var(--bs-danger-rgb), .05) !important;;
+    border: var(--bs-border-width) var(--bs-border-style)
+      var(--bs-danger-border-subtle) !important;
+
+    &:not(:nth-child(7n), :nth-child(7n-6)) {
+      border-left: none !important;
+      border-right: none !important;
+    }
+
+    &:nth-child(7n-6) {
+      border: var(--bs-border-width) var(--bs-border-style)
+        var(--bs-danger-border-subtle) !important;
+      border-right: none !important;
+    }
+
+    &:nth-child(7n) {
+      border: var(--bs-border-width) var(--bs-border-style)
+        var(--bs-danger-border-subtle) !important;
+      border-left: none !important;
+    }
   }
 }
