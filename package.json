@@ -8,8 +8,9 @@
     "watch": "ng build --watch --configuration development",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "e2e": "start-server-and-test start http://localhost:4200 e2e:execute",
-    "e2e:execute": "cucumber-js"
+    "e2e": "npm run empty-reports && start-server-and-test start http://localhost:4200 e2e:execute",
+    "e2e:execute": "npm run empty-reports && cucumber-js",
+    "empty-reports": "npx rimraf tests/reports"
   },
   "private": true,
   "dependencies": {
@@ -24,8 +25,9 @@
     "@ngrx/effects": "^16.2.0",
     "@ngrx/store": "^16.2.0",
     "@ngrx/store-devtools": "^16.2.0",
+    "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.1",
-    "bootstrap-icons": "^1.10.5",
+    "bootstrap-icons": "^1.11.3",
     "jest-preset-angular": "^13.1.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
@@ -36,6 +38,7 @@
     "@angular-devkit/build-angular": "^16.2.0",
     "@angular/cli": "~16.2.0",
     "@angular/compiler-cli": "^16.2.1",
+    "@axe-core/playwright": "^4.10.0",
     "@cucumber/cucumber": "^10.3.1",
     "@playwright/test": "^1.41.2",
     "@testing-library/angular": "^14.3.0",
@@ -45,25 +48,10 @@
     "@types/cucumber": "^7.0.0",
     "@types/jest": "^29.5.3",
     "@types/node": "^20.11.20",
+    "axe-html-reporter": "^2.2.11",
     "jest": "^29.6.2",
     "ng-mocks": "^14.11.0",
     "start-server-and-test": "^2.0.3",
     "typescript": "~4.9.4"
-  },
-  "jest": {
-    "preset": "jest-preset-angular",
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/setup.jest.ts"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/node_modules/",
-      "<rootDir>/dist/"
-    ],
-    "coveragePathIgnorePatterns": [
-      "<rootDir>/src/app/config/"
-    ],
-    "transform": {
-      "\\.html$": "ts-jest"
-    }
   }
 }

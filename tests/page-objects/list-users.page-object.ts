@@ -1,31 +1,50 @@
-import { fixture } from "../config/fixture";
-import { emptyList, fieldEmail, fieldName, fieldPhone } from "../selectors/list-users.selector";
+import { fixture } from '../config/fixture';
+import {
+  emptyList,
+  fieldEmail,
+  fieldName,
+  fieldPhone,
+} from '../selectors/list-users.selector';
 
 export const goToUsersPage = async () => {
-  await fixture.page.goto("http://localhost:4200/users");
-}
+  await fixture.page.goto('http://localhost:4200/');
+};
+
+export const waitForURLUsers = async () => {
+  await fixture.page.waitForURL('**/users');
+};
+
+export const clickButtonClients = async () => {
+  await fixture.page.getByTestId('button-navigate-clients').click();
+};
 
 export const getTextFromTable = async (tables: Array<string>) => {
   return tables.map((row) => {
     const [name, email, phone] = row;
-    return { name, email, phone }
+    return { name, email, phone };
   });
-}
+};
 
 export const getTextFromView = async (length: number) => {
   const texts = [];
 
   for (let index = 0; index < length; index++) {
-    const name = await fixture.page.getByTestId(`${fieldName}-${index}`).textContent();
-    const email = await fixture.page.getByTestId(`${fieldEmail}-${index}`).textContent();
-    const phone = await fixture.page.getByTestId(`${fieldPhone}-${index}`).textContent();
+    const name = await fixture.page
+      .getByTestId(`${fieldName}-${index}`)
+      .textContent();
+    const email = await fixture.page
+      .getByTestId(`${fieldEmail}-${index}`)
+      .textContent();
+    const phone = await fixture.page
+      .getByTestId(`${fieldPhone}-${index}`)
+      .textContent();
 
     texts.push({ name, email, phone });
   }
 
   return texts;
-}
+};
 
 export const getTextEmptyList = async () => {
   return fixture.page.getByTestId(emptyList).textContent();
-}
+};

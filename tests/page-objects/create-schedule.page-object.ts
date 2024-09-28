@@ -1,7 +1,11 @@
-import { fixture } from "../config/fixture";
+import { fixture } from '../config/fixture';
 
-export const goToCreateSchedule = async () => {
-  await fixture.page.goto("http://localhost:4200/calendar");
+export const goToDefaultPage = async () => {
+  await fixture.page.goto("http://localhost:4200/");
+};
+
+export const waitForURLCalendar = async () => {
+  await fixture.page.waitForURL('**/calendar');
 };
 
 export const selectDate = async () => {
@@ -9,20 +13,20 @@ export const selectDate = async () => {
 
   await fixture.page.getByTestId(`day-${date.getDate()}`).click();
   await fixture.page.waitForTimeout(1000);
-}
+};
 
 export const selectTime = async () => {
-  await fixture.page.getByTestId("time").click();
-}
+  await fixture.page.getByTestId('time').click();
+};
 
-export const clickButton = async () => {
-  await fixture.page.getByTestId("send-bullet").click();
-}
+export const clickButton = async (selectorButton: string) => {
+  await fixture.page.getByTestId(selectorButton).click();
+};
 
 export const getUrl = async () => {
   return fixture.page.url();
-}
+};
 
 export const waitForResponseCreateSchedule = async () => {
   await fixture.page.waitForURL('**/schedule');
-}
+};

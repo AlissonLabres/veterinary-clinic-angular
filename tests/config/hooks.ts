@@ -1,6 +1,7 @@
 import { BeforeAll, AfterAll, Before, After, Status } from '@cucumber/cucumber';
 import { Browser, BrowserContext, chromium } from '@playwright/test';
 import { fixture } from './fixture';
+import { violations, createReport } from './accessibility';
 
 let browser: Browser;
 let context: BrowserContext;
@@ -19,7 +20,8 @@ Before(async () => {
 });
 
 After(async ({ pickle, result }) => {
-  if (result?.status == Status.FAILED) {
+  if (result?.status == Status.FAILED || violations()) {
+    createReport(pickle.name);
     await fixture.page.screenshot({
       path: `tests/reports/screenshots/${pickle.name}.png`,
       type: 'png',
