@@ -5,18 +5,22 @@ export const goToDefaultPage = async () => {
 };
 
 export const waitForURLCalendar = async () => {
-  await fixture.page.waitForURL('**/calendar');
+  await fixture.page.waitForURL('**/schedule/create');
 };
 
 export const selectDate = async () => {
   const date = new Date();
 
   await fixture.page.getByTestId(`day-${date.getDate()}`).click();
-  await fixture.page.waitForTimeout(1000);
+  // await fixture.page.waitForTimeout(1000);
 };
 
 export const selectTime = async () => {
   await fixture.page.getByTestId('time').click();
+};
+
+export const selectUser = async () => {
+  await fixture.page.getByTestId('button-select-user-0').click();
 };
 
 export const clickButton = async (selectorButton: string) => {

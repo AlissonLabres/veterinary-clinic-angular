@@ -10,6 +10,7 @@ import {
   goToDefaultPage,
   selectDate,
   selectTime,
+  selectUser,
   waitForResponseCreateSchedule,
   waitForURLCalendar,
 } from '../page-objects/create-schedule.page-object';
@@ -20,7 +21,7 @@ import {
 import { accessibilityScan } from '../config/accessibility';
 
 Given(
-  'I mocking the responses with {string} of the request',
+  'que estou simulando as respostas com {string} da solicitação',
   async (response) => {
     await mockingBullets(response);
     await mockingSchedule(response);
@@ -29,34 +30,33 @@ Given(
   }
 );
 
-Given('I am on the schedule page', async () => {
+Given('eu clico no botão Agendar consulta', async () => {
+  await clickButton(buttonSchedule);
+});
+
+
+When('estou na página de criar agendamento', async () => {
   await waitForURLCalendar();
   await accessibilityScan();
 });
 
-When('I select a date', async () => {
+When('eu seleciono uma data', async () => {
   await selectDate();
 });
 
-When('I select a time', async () => {
+When('eu seleciono uma hora', async () => {
   await selectTime();
 });
 
-When('I click on button {string}', async (button: string) => {
-  let selectorButton = '';
-  switch (button) {
-    case 'Agendar consulta':
-      selectorButton = buttonSchedule;
-      break;
-    case 'Enviar':
-      selectorButton = buttonCreateSchedule;
-      break;
-  }
-
-  await clickButton(selectorButton);
+When('eu seleciono um usuário', async () => {
+  await selectUser();
 });
 
-Then('I should navigate to the schedule page', async () => {
+When('eu clico no botão Enviar', async () => {
+  await clickButton(buttonCreateSchedule);
+});
+
+Then('eu devo ser direcionado para a página de agendamento', async () => {
   await waitForResponseCreateSchedule();
   const url = await getUrl();
 
