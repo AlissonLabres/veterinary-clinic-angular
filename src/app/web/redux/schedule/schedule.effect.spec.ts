@@ -79,7 +79,7 @@ describe('ScheduleEffect', () => {
 
   describe('createSchedule$', () => {
     it('should return a SendBulletSuccess action, on success', () => {
-      const action = CreateSchedule({ date: '2022-02-01T12:00', hour: '12:00' });
+      const action = CreateSchedule({ date: '2022-02-01T12:00', hour: '12:00', user_id: 1 });
       const outputMock = { id: '0001', status: 'SCHEDULED' } as unknown as CreateScheduleOutput;
       const outcome = CreateScheduleSuccess();
 
@@ -92,7 +92,7 @@ describe('ScheduleEffect', () => {
     });
 
     it('should return a SendBulletError action, on error', () => {
-      const action = CreateSchedule({ date: '2022-02-01T12:00', hour: '12:00' });
+      const action = CreateSchedule({ date: '2022-02-01T12:00', hour: '12:00', user_id: 1 });
       const outcome = CreateScheduleError({ message: 'Error' });
 
       jest.spyOn(createScheduleUsecase, 'execute').mockReturnValue(
@@ -106,7 +106,7 @@ describe('ScheduleEffect', () => {
     });
 
     it('should return a SendBulletError action, on error with message default', () => {
-      const action = CreateSchedule({ date: '2022-02-01T12:00', hour: '12:00' });
+      const action = CreateSchedule({ date: '2022-02-01T12:00', hour: '12:00', user_id: 1 });
       const outcome = CreateScheduleError({ message: 'Erro ao criar agendamento' });
 
       jest.spyOn(createScheduleUsecase, 'execute').mockReturnValue(

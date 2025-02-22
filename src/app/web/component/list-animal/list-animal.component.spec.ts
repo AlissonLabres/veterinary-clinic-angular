@@ -1,4 +1,6 @@
+import { ActivatedRoute } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
+import { of } from 'rxjs';
 
 import { render } from '@testing-library/angular';
 import { ListAnimalComponent } from './list-animal.component';
@@ -52,6 +54,7 @@ const renderListAnimal = async (loading: boolean, animals: any) => {
   return render(ListAnimalComponent, {
     imports: [],
     providers: [
+      { provide: ActivatedRoute, useValue: { params: of({ id: 123 }) } },
       provideMockStore({
         selectors: [selectorLoadingUserMock, selectorErrorUserMock],
       }),

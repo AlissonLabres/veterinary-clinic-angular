@@ -1,6 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -30,10 +30,14 @@ import { ScheduleEffect } from './web/redux/schedule/schedule.effect';
 import { ScheduleReducer } from './web/redux/schedule/schedule.reducer';
 import { UserEffect } from './web/redux/user/user.effect';
 import { UserReducer } from './web/redux/user/user.reducer';
+import { CreateScheduleComponent } from './web/component/create-schedule/create-schedule.component';
+import { ProgressStepComponent } from './web/component/create-schedule/progress-step/progress-step.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    CreateScheduleComponent,
+    ProgressStepComponent,
     CalendarComponent,
     DatesComponent,
     TimesComponent,
@@ -49,6 +53,7 @@ import { UserReducer } from './web/redux/user/user.reducer';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     StoreModule.forRoot({
@@ -56,7 +61,7 @@ import { UserReducer } from './web/redux/user/user.reducer';
       bulletState: BulletReducer,
       calendarState: CalendarReducer,
       userState: UserReducer,
-      animalState: AnimalReducer
+      animalState: AnimalReducer,
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25 }),
     EffectsModule.forRoot([
@@ -64,10 +69,10 @@ import { UserReducer } from './web/redux/user/user.reducer';
       BulletEffect,
       CalendarEffect,
       UserEffect,
-      AnimalEffect
+      AnimalEffect,
     ]),
     AppRoutingModule,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

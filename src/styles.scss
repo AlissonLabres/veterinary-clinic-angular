@@ -68,3 +68,8 @@ body {
   --bs-border-opacity: 1;
   border-color: rgba(var(--bs-indigo-rgb), var(--bs-border-opacity)) !important;
 }
+
+.text-bg-indigo {
+  color: var(--bs-white);
+  background-color: var(--bs-indigo) !important;
+}

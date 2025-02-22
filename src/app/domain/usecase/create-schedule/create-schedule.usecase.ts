@@ -11,8 +11,8 @@ export class CreateScheduleUsecase {
 
   protected scheduleRepository: ScheduleRepositoryInterface = inject(ScheduleRepositoryToken);
 
-  execute(bullet_code: string): Observable<CreateScheduleOutput> {
-    return this.scheduleRepository.createSchedule(bullet_code)
+  execute(bullet_code: string, user_id: number): Observable<CreateScheduleOutput> {
+    return this.scheduleRepository.createSchedule(bullet_code, user_id)
       .pipe(
         map(scheduleEntity => CreateScheduleOutput.restore(scheduleEntity))
       );

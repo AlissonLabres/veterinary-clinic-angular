@@ -35,7 +35,7 @@ describe('ScheduleRepository', () => {
 
     (httpClient.post as jest.Mock).mockReturnValue(of(bullet));
 
-    service.createSchedule('0001')
+    service.createSchedule('0001', 1)
       .pipe(take(1))
       .subscribe(response => expect(response).toEqual(bullet));
   });

@@ -1,0 +1,38 @@
+.progress-step {
+  display: flex;
+}
+
+.breadcrumb {
+  flex: 1;
+
+  .breadcrumb-item {
+    position: relative;
+    flex-grow: 1;
+
+    &:first-child {
+      padding-left: 1.5rem;
+    }
+
+    &:last-child {
+      padding-right: 1.5rem;
+
+      &::after {
+        display: none;
+      }
+    }
+
+    &::before {
+      display: none;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 60%;
+      width: 50%;
+      right: -25%;
+      height: 0.1rem;
+      border: 0.02rem solid var(--bs-border-color);
+    }
+  }
+}

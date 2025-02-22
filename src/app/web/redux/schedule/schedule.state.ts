@@ -1,8 +1,8 @@
 export interface ScheduleInterface {
-  schedule_id: number,
-  schedule_status: string,
-  bullet_code: string,
-  type_service: string
+  schedule_id: number;
+  schedule_status: string;
+  bullet_code: string;
+  type_service: string;
 }
 
 export interface ScheduleStateInterface {
@@ -13,6 +13,7 @@ export interface ScheduleStateInterface {
 }
 
 export interface CreateScheduleInterface {
-  date: string,
-  hour: string
+  date: string;
+  hour: string;
+  user_id: number;
 }

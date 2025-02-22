@@ -1,12 +1,22 @@
-import { CancelSchedule, CancelScheduleError, CancelScheduleSuccess, CreateSchedule, CreateScheduleError, CreateScheduleSuccess, GetSchedules, GetSchedulesError, GetSchedulesSuccess } from "./schedule.action";
-import { ScheduleReducer } from "./schedule.reducer";
-import { ScheduleStateInterface } from "./schedule.state";
+import {
+  CancelSchedule,
+  CancelScheduleError,
+  CancelScheduleSuccess,
+  CreateSchedule,
+  CreateScheduleError,
+  CreateScheduleSuccess,
+  GetSchedules,
+  GetSchedulesError,
+  GetSchedulesSuccess,
+} from './schedule.action';
+import { ScheduleReducer } from './schedule.reducer';
+import { ScheduleStateInterface } from './schedule.state';
 
 const initialState: ScheduleStateInterface = {
   entities: [],
   error: undefined,
   success: undefined,
-  isLoading: false
+  isLoading: false,
 };
 
 describe('CalendarReducer', () => {
@@ -46,7 +56,7 @@ describe('CalendarReducer', () => {
   });
 
   it('should set isLoading to true when CreateSchedule action is dispatched', () => {
-    const input = { date: '2022-01-01', hour: '15:00' };
+    const input = { date: '2022-01-01', hour: '15:00', user_id: 1 };
     const action = CreateSchedule(input);
     const result = ScheduleReducer(initialState, action);
 

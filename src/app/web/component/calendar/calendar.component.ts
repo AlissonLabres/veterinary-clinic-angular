@@ -1,4 +1,11 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+  inject,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Subject, of } from 'rxjs';
@@ -7,20 +14,34 @@ import { filter, takeUntil, tap } from 'rxjs/operators';
 import { MonthNameEnum } from './calendar-month-name.component';
 
 import { GetBulletsAvailable } from '../../redux/bullet/bullet.action';
-import { GetErrorBullet, GetLoadingBullet, GetDatesAvailableSelector, GetTimesAvailabelPerDaySelector } from '../../redux/bullet/bullet.selector';
+import {
+  GetErrorBullet,
+  GetLoadingBullet,
+  GetDatesAvailableSelector,
+  GetTimesAvailabelPerDaySelector,
+} from '../../redux/bullet/bullet.selector';
 
 import { GetCalendarSelector } from '../../redux/calendar/calendar.selector';
-import { GetCalendar, NextMonthCalendar, PreviousMonthCalendar } from '../../redux/calendar/calendar.action';
+import {
+  GetCalendar,
+  NextMonthCalendar,
+  PreviousMonthCalendar,
+} from '../../redux/calendar/calendar.action';
 
 import { CreateSchedule } from '../../redux/schedule/schedule.action';
-import { CreateErrorSchedule, CreateSuccessSchedule } from '../../redux/schedule/schedule.selector';
-
+import {
+  CreateErrorSchedule,
+  CreateSuccessSchedule,
+} from '../../redux/schedule/schedule.selector';
+import { GetUser } from '../../redux/user/user.action';
+import { GetUsersSelector } from '../../redux/user/user.selector';
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss']
+  styleUrls: ['./calendar.component.scss'],
 })
 export class CalendarComponent implements OnInit, OnDestroy {
+  @Output() date = new EventEmitter<string>();
 
   router: Router = inject(Router);
   store: Store = inject(Store);
@@ -31,24 +52,28 @@ export class CalendarComponent implements OnInit, OnDestroy {
   calendar$ = this.store.pipe(select(GetCalendarSelector));
 
   datesAvailable$ = this.store.pipe(select(GetDatesAvailableSelector));
-  timesAvailable$ = of<string[]>([]);
+  // timesAvailable$ = of<string[]>([]);
 
-  createSuccess$ = this.store.pipe(select(CreateSuccessSchedule));
-  scheduleError$ = this.store.pipe(select(CreateErrorSchedule));
+  // createSuccess$ = this.store.pipe(select(CreateSuccessSchedule));
+  // scheduleError$ = this.store.pipe(select(CreateErrorSchedule));
 
   destroy$ = new Subject();
-  schedule?: { date: string, hour: string };
+  schedule?: { date: string; hour: string };
+
+  get scheduleSelect() {
+    return this.schedule?.date;
+  }
 
   ngOnInit(): void {
     this.store.dispatch(GetBulletsAvailable());
     this.store.dispatch(GetCalendar());
 
-    this.createSuccess$
-      .pipe(
-        takeUntil(this.destroy$),
-        filter((value: boolean | undefined) => value === true)
-      )
-      .subscribe(() => this.router.navigate(['/']));
+    // this.createSuccess$
+    //   .pipe(
+    //     takeUntil(this.destroy$),
+    //     filter((value: boolean | undefined) => value === true)
+    //   )
+    //   .subscribe(() => this.router.navigate(['/']));
   }
 
   ngOnDestroy(): void {
@@ -60,7 +85,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     const month: number = calendarDate.getMonth();
     const year: number = calendarDate.getFullYear();
 
-    return `${MonthNameEnum[month]} ${year}`
+    return `${MonthNameEnum[month]} ${year}`;
   }
 
   previousMonth() {
@@ -72,25 +97,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   selectDay($event: string) {
-    this.timesAvailable$ = this.store.pipe(
-      select(GetTimesAvailabelPerDaySelector($event))
-    );
-
-    this.schedule = { date: $event, hour: '' };
+    this.date.emit($event);
   }
-
-  selectBullet($event: string | undefined) {
-    if (this.schedule) {
-      this.schedule.hour = $event!;
-    }
-  }
-
-  createSchedule() {
-    if (!this.schedule?.date || !this.schedule?.hour) {
-      return;
-    }
-
-    this.store.dispatch(CreateSchedule(this.schedule))
-  }
-
 }

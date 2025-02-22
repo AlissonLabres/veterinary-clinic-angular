@@ -1,0 +1,62 @@
+<app-progress-step
+  [quantitySteps]="quantitySteps"
+  [stepper]="stepper"
+  [stepActive]="stepActive"
+  (nextStep)="nextStep()"
+  (previousStep)="previousStep()"
+></app-progress-step>
+
+<div class="row justify-content-center" *ngIf="stepActive === 1">
+  <app-calendar class="col" (date)="getBulletsBy($event)"></app-calendar>
+  <div class="col-sm-2" *ngIf="timesAvailable.length > 0">
+    <app-times
+      (bullet)="setSchedule($event)"
+      [bulletsTimeAvailable]="timesAvailable"
+    ></app-times>
+  </div>
+</div>
+
+<div class="col my-5" *ngIf="stepActive === 2">
+  <div class="d-grid gap-4 col-6 mx-auto" *ngIf="users$ | async as users">
+    <ng-container *ngFor="let user of users; let idx = index">
+      <input
+        type="radio"
+        class="btn-check"
+        [id]="'userselect' + idx"
+        [value]="user.user_id"
+        [(ngModel)]="userselect"
+        (ngModelChange)="setUser($event)"
+      />
+      <label
+        class="btn btn-outline-indigo"
+        [attr.data-testId]="'button-select-user-' + idx"
+        [for]="'userselect' + idx"
+      >
+        {{ user.user_name }}
+      </label>
+    </ng-container>
+  </div>
+</div>
+
+<div class="col my-5" *ngIf="stepActive === 3">
+  <div class="d-grid gap-2 col-6 mx-auto">
+    <small class="text-body-secondary">Data</small>
+    <p class="lead">{{ getDate() }}</p>
+
+    <small class="text-body-secondary">Horário</small>
+    <p class="lead">{{ schedule?.hour }}</p>
+
+    <small class="text-body-secondary">Usuário</small>
+    <p class="lead" *ngIf="users$ | async as users">{{ getUser(users) }}</p>
+
+    <button
+      *ngIf="schedule?.date && schedule?.hour && schedule?.user_id"
+      data-testid="button-create-schedule"
+      type="button"
+      class="btn btn-indigo btn-lg mt-4"
+      (click)="createSchedule()"
+    >
+      Enviar
+    </button>
+  </div>
+</div>

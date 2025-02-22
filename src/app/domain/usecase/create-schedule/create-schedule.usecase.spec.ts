@@ -1,10 +1,10 @@
-import { TestBed } from "@angular/core/testing";
-import { of, take } from "rxjs";
+import { TestBed } from '@angular/core/testing';
+import { of, take } from 'rxjs';
 
-import { ScheduleRepositoryToken } from "../../../config/injection-token.repositories";
-import { ScheduleRepositoryInterface } from "../../repository/schedule-repository.interface";
+import { ScheduleRepositoryToken } from '../../../config/injection-token.repositories';
+import { ScheduleRepositoryInterface } from '../../repository/schedule-repository.interface';
 
-import { CreateScheduleUsecase } from "./create-schedule.usecase";
+import { CreateScheduleUsecase } from './create-schedule.usecase';
 
 describe('CreateScheduleUsecase', () => {
   let usecase: CreateScheduleUsecase;
@@ -16,9 +16,9 @@ describe('CreateScheduleUsecase', () => {
         CreateScheduleUsecase,
         {
           provide: ScheduleRepositoryToken,
-          useValue: { createSchedule: jest.fn() }
-        }
-      ]
+          useValue: { createSchedule: jest.fn() },
+        },
+      ],
     });
 
     usecase = TestBed.inject(CreateScheduleUsecase);
@@ -32,8 +32,9 @@ describe('CreateScheduleUsecase', () => {
       of({ schedule_id: '001', schedule_status: 'SCHEDULED' })
     );
 
-    usecase.execute('001')
+    usecase
+      .execute('001', 1)
       .pipe(take(1))
-      .subscribe(response => expect(response).toEqual(outcome));
+      .subscribe((response) => expect(response).toEqual(outcome));
   });
 });

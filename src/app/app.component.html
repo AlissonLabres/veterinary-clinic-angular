@@ -1,10 +1,6 @@
 <div class="container">
   <header class="row justify-content-between d-flex my-3">
-    <h1
-      class="col my-auto"
-      data-testid="title-page"
-      routerLink="schedule"
-    >
+    <h1 class="col my-auto" data-testid="title-page" routerLink="schedule">
       <a role="link" class="text-decoration-none">{{ title }}</a>
     </h1>
     <nav class="col-auto d-flex flex-column align-items-between gap-2">
@@ -13,16 +9,20 @@
         data-testid="button-navigate-clients"
         class="col btn btn-outline-indigo"
         routerLink="users"
-      >Clientes</button>
+      >
+        Clientes
+      </button>
       <button
         type="button"
         data-testid="button-navigate-schedule"
         class="col btn btn-outline-indigo"
-        routerLink="calendar"
-      >Agendar consulta</button>
+        routerLink="schedule/create"
+      >
+        Agendar consulta
+      </button>
     </nav>
   </header>
-  <hr>
+  <hr />
   <main class="row">
     <router-outlet></router-outlet>
   </main>
